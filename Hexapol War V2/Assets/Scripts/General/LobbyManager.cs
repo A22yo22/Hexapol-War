@@ -31,7 +31,7 @@ public class LobbyManager : NetworkBehaviour
         if (newValue == 2)
         {
             UiManager.instance.lobbyUi.SetActive(false);
-            UiManager.instance.mainCam.SetActive(false);
+            //UiManager.instance.mainCam.SetActive(tr);
         }
     }
 }
