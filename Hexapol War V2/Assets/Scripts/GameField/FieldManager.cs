@@ -6,4 +6,6 @@ using UnityEngine;
 public class FieldManager : NetworkBehaviour
 {
     public FieldData.CaptureState playerAtMove;
+
+    public List<GameObject> players;
 }

@@ -1,5 +1,4 @@
 using Mirror;
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,8 +64,10 @@ public class Interactions : NetworkBehaviour
             lastSelectedField = lobbyManager.hexagonsSpawned[selectedField];
 
             //Get other player
-            if(isServer) otherPlayer = NetworkServer.connections[1].identity.gameObject;
-            else  otherPlayer = NetworkServer.connections[0].identity.gameObject;
+            Debug.Log(NetworkClient.all);
+
+            //if (isServer) otherPlayer = NetworkServer.connections[1].identity.gameObject;
+            //else if(isClient)  otherPlayer = NetworkServer.connections[0].identity.gameObject;
 
             firstTileSpawned = true;
         }
@@ -90,13 +91,38 @@ public class Interactions : NetworkBehaviour
                 {
                     SwitchPlayerAtMove();
 
+                    //Raise up
                     selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                     Move(selectedFieldState);
                 }
-                else if (selectedFieldState != FieldData.CaptureState.Clear)
+                else if (selectedFieldState != FieldData.CaptureState.Clear)    //Attack
                 {
                     Attack();
                 }
+                else    //Clear
+                {
+                    //Reset used field possitions
+                    selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+                    lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+                    //Reset selected fields
+                    for (int i = 0; i < selectedFields.Count; i++)
+                    {
+                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                    }
+                }
+            }
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            //Reset used field possitions
+            selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+            lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+            //Reset selected fields
+            for (int i = 0; i < selectedFields.Count; i++)
+            {
+                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
             }
         }
     }
@@ -124,6 +150,7 @@ public class Interactions : NetworkBehaviour
             selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
         }
 
+        //Enable other player
         if (otherPlayer != null)
         {
             otherPlayer.SetActive(true);
