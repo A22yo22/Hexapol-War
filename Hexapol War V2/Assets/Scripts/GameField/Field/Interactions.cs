@@ -29,8 +29,16 @@ public class Interactions : NetworkBehaviour
         if (!isLocalPlayer) return;
 
         //Asign playerTag
-        if (isServer) thisPlayerTag = FieldData.CaptureState.Player1;
-        else if (isClient) thisPlayerTag = FieldData.CaptureState.Player2;
+        if (isServer)
+        {
+            thisPlayerTag = FieldData.CaptureState.Player1;
+        }
+        else if (isClientOnly)
+        {
+            thisPlayerTag = FieldData.CaptureState.Player2;
+
+            CmdSetPlayer2(gameObject);
+        }
 
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
@@ -54,10 +62,16 @@ public class Interactions : NetworkBehaviour
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
+                RpcSetPlayer1(gameObject);
+
                 for (int i = 0; i < fieldSpawner.hexagonsSpawned.Count; i++)
                 {
                     CmdAddHexagons(fieldSpawner.hexagonsSpawned[i].GetComponent<NetworkIdentity>());
                 }
+            }
+            else if (isClientOnly)
+            {
+                CmdSetPlayer2(gameObject);
             }
 
             if(lobbyManager.fieldssSpawned.Count == 0) return;
@@ -272,6 +286,17 @@ public class Interactions : NetworkBehaviour
         playersConnected[1].otherPlayer = playersConnected[0];
     }
 
+    //Set players in field manager
+    [ClientRpc]
+    public void RpcSetPlayer1(GameObject player1)
+    {
+        FindObjectOfType<FieldManager>().players1 = player1;
+    }
+    [Command]
+    public void CmdSetPlayer2(GameObject player2)
+    {
+        FindObjectOfType<FieldManager>().players2 = player2;
+    }
 }
 
 //Checks for game field

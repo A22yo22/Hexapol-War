@@ -7,5 +7,6 @@ public class FieldManager : NetworkBehaviour
 {
     public FieldData.CaptureState playerAtMove;
 
-    public List<GameObject> players;
+    public GameObject players1;
+    public GameObject players2;
 }
