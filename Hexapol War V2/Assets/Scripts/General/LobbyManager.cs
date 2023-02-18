@@ -13,7 +13,7 @@ public class LobbyManager : NetworkBehaviour
     public GameObject lobbyUi;
     public GameObject mainCam;
 
-    public List<GameObject> hexagonsSpawned = new List<GameObject>();
+    public List<GameObject> fieldssSpawned = new List<GameObject>();
 
     public void ReadyUp()
     {

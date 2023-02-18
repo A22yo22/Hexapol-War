@@ -59,12 +59,12 @@ public class Interactions : NetworkBehaviour
                 }
             }
 
-            if(lobbyManager.hexagonsSpawned.Count == 0) return;
+            if(lobbyManager.fieldssSpawned.Count == 0) return;
 
             //Set player start pos
-            int selectedField = Random.Range(0, lobbyManager.hexagonsSpawned.Count);
-            CmdSetFieldState(lobbyManager.hexagonsSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
-            lastSelectedField = lobbyManager.hexagonsSpawned[selectedField];
+            int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+            CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
+            lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
 
             //Get other player
             RpcSetOtherPlayeerVariable();
@@ -181,7 +181,7 @@ public class Interactions : NetworkBehaviour
     [ClientRpc]
     public void RpcAddHexagons(NetworkIdentity id)
     {
-        FindObjectOfType<LobbyManager>().hexagonsSpawned.Add(id.gameObject);
+        FindObjectOfType<LobbyManager>().fieldssSpawned.Add(id.gameObject);
     }
 
     //Lobby managment
