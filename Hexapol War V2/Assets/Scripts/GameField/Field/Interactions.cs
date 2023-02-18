@@ -175,7 +175,10 @@ public class Interactions : NetworkBehaviour
         //Reset selected fields
         for(int i = 0; i < selectedFields.Count; i++)
         {
-            selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+            {
+                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+            }
         }
 
         //Switch player
