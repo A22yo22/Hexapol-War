@@ -12,7 +12,7 @@ public class Interactions : NetworkBehaviour
 
     public GameObject otherPlayer;
 
-    GameObject selectedTile;
+    GameObject selectedField;
     GameObject lastSelectedField;
 
     //Lists
@@ -79,8 +79,8 @@ public class Interactions : NetworkBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 //Sets last selected field to current selcted 
-                if (selectedTile != null) lastSelectedField = selectedTile;
-                selectedTile = hit.transform.gameObject;
+                if (selectedField != null) lastSelectedField = selectedField;
+                selectedField = hit.transform.gameObject;
 
                 //Gets the state of the selected field
                 FieldData.CaptureState selectedFieldState = Checks.GetFieldState(hit.transform.gameObject);
@@ -90,8 +90,8 @@ public class Interactions : NetworkBehaviour
                 {
                     SwitchPlayerAtMove();
 
-                    selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0.4f, selectedTile.transform.position.z);
-                    //Place(clickedState);
+                    selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
+                    Move(selectedFieldState);
                 }
                 else if (selectedFieldState != FieldData.CaptureState.Clear)
                 {
@@ -102,12 +102,20 @@ public class Interactions : NetworkBehaviour
     }
 
     //Move player to selected field
+    public void Move(FieldData.CaptureState fieldState)
+    {
+        if (fieldState == FieldData.CaptureState.Select)
+        {
+            CmdSetFieldState(selectedField.GetComponent<NetworkIdentity>(), thisPlayerTag);
+            SwitchPlayerAtMove();
+        }
+    }
 
     //Switches the player at move to the next one
     public void SwitchPlayerAtMove()
     {
         //Reset used field possitions
-        selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0f, selectedTile.transform.position.z);
+        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
         lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
 
         //Reset selected fields
