@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Interactions : NetworkBehaviour
@@ -35,6 +36,8 @@ public class Interactions : NetworkBehaviour
 
         //Get lobby manger
         lobbyManager = FindObjectOfType<LobbyManager>();
+
+        
     }
 
     bool firstTileSpawned;
@@ -56,7 +59,7 @@ public class Interactions : NetworkBehaviour
                 }
             }
 
-            if(fieldSpawner.hexagonsSpawned.Count == 0) return;
+            if(lobbyManager.hexagonsSpawned.Count == 0) return;
 
             //Set player start pos
             int selectedField = Random.Range(0, lobbyManager.hexagonsSpawned.Count);
@@ -64,8 +67,7 @@ public class Interactions : NetworkBehaviour
             lastSelectedField = lobbyManager.hexagonsSpawned[selectedField];
 
             //Get other player
-            Debug.Log(NetworkClient.all);
-
+            RpcSetOtherPlayeerVariable();
             //if (isServer) otherPlayer = NetworkServer.connections[1].identity.gameObject;
             //else if(isClient)  otherPlayer = NetworkServer.connections[0].identity.gameObject;
 
@@ -211,6 +213,17 @@ public class Interactions : NetworkBehaviour
     {
         FindObjectOfType<FieldManager>().playerAtMove = playerToWhoWillHaveTheMove;
     }
+
+    //Sets other player variable
+    [ClientRpc]
+    public void RpcSetOtherPlayeerVariable()
+    {
+        List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
+
+        playersConnected[0].otherPlayer = playersConnected[1].gameObject;
+        playersConnected[1].otherPlayer = playersConnected[0].gameObject;
+    }
+
 }
 
 //Checks for game field
