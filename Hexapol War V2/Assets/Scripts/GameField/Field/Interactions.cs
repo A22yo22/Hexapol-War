@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Interactions : NetworkBehaviour
 {
     public FieldData.CaptureState thisPlayerTag;
+    public LayerMask detectionLayer;
 
     bool madeMove = false;
 
@@ -139,7 +141,14 @@ public class Interactions : NetworkBehaviour
         }
     }
 
-    //Switches the player at move to the next one
+    //Gets the surrounding fields of the selected object
+    Collider[] GetSurroundingFields()
+    {
+        Collider[] fieldsFound = Physics.OverlapSphere(selectedField.transform.position, 2, detectionLayer);
+        return fieldsFound;
+    }
+
+    //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
         //Reset used field possitions
@@ -163,11 +172,15 @@ public class Interactions : NetworkBehaviour
         RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
     }
 
+
+
     //Events
     public void Attack()
     {
 
     }
+
+
 
 
     //Network section
