@@ -10,8 +10,14 @@ public class Interactions : NetworkBehaviour
 
     bool madeMove = false;
 
+    public GameObject otherPlayer;
+
     GameObject selectedTile;
     GameObject lastSelectedField;
+
+    //Lists
+    List<GameObject> selectedFields;
+
 
     //References
     LobbyManager lobbyManager;
@@ -39,7 +45,7 @@ public class Interactions : NetworkBehaviour
         if (!isLocalPlayer) return;
 
         //Sets the spawn field of the current player and get spawnned hexagons
-        if (FindObjectOfType<LobbyManager>().playerReady == 2 && firstTileSpawned)
+        if (FindObjectOfType<LobbyManager>().playerReady == 2 && !firstTileSpawned)
         {
             //Sets all spawned fields
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
@@ -58,32 +64,36 @@ public class Interactions : NetworkBehaviour
             CmdSetFieldState(lobbyManager.hexagonsSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
             lastSelectedField = lobbyManager.hexagonsSpawned[selectedField];
 
+            //Get other player
+            if(isServer) otherPlayer = NetworkServer.connections[1].identity.gameObject;
+            else  otherPlayer = NetworkServer.connections[0].identity.gameObject;
+
             firstTileSpawned = true;
         }
         
         if(Input.GetMouseButtonDown(0))
         {
+            //Makes gets the field you've clicked on
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
             if (Physics.Raycast(ray, out hit))
             {
-                if (selectedTile != null)
-                {
-                    lastSelectedField = selectedTile;
-                }
+                //Sets last selected field to current selcted 
+                if (selectedTile != null) lastSelectedField = selectedTile;
                 selectedTile = hit.transform.gameObject;
 
-                FieldData.CaptureState clickedState = Checks.GetFieldState(hit.transform.gameObject);
+                //Gets the state of the selected field
+                FieldData.CaptureState selectedFieldState = Checks.GetFieldState(hit.transform.gameObject);
 
-                if (Checks.CanPlaceHere(clickedState, thisPlayerTag))
+                //Checks if player can move on this selected field
+                if (Checks.CanMoveHere(selectedFieldState, thisPlayerTag))
                 {
                     SwitchPlayerAtMove();
 
                     selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0.4f, selectedTile.transform.position.z);
                     //Place(clickedState);
                 }
-                else if (clickedState != FieldData.CaptureState.Clear)
+                else if (selectedFieldState != FieldData.CaptureState.Clear)
                 {
                     Attack();
                 }
@@ -91,12 +101,28 @@ public class Interactions : NetworkBehaviour
         }
     }
 
+    //Move player to selected field
+
     //Switches the player at move to the next one
     public void SwitchPlayerAtMove()
     {
+        //Reset used field possitions
         selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0f, selectedTile.transform.position.z);
+        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
 
+        //Reset selected fields
+        for(int i = 0; i < selectedFields.Count; i++)
+        {
+            selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+        }
 
+        if (otherPlayer != null)
+        {
+            otherPlayer.SetActive(true);
+            gameObject.SetActive(true);
+        }
+
+        //Switch player
         RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
     }
 
@@ -156,7 +182,7 @@ public class Interactions : NetworkBehaviour
 public class Checks
 {
     //Checks if player can place on selected field
-    public static bool CanPlaceHere(FieldData.CaptureState state, FieldData.CaptureState playerTag)
+    public static bool CanMoveHere(FieldData.CaptureState state, FieldData.CaptureState playerTag)
     {
         if (state == playerTag || state == FieldData.CaptureState.Select) return true;
 
