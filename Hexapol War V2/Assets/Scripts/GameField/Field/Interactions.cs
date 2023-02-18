@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Interactions : NetworkBehaviour
 {
     public FieldData.CaptureState thisPlayerTag;
-    public LayerMask detectionLayer;
 
-    bool madeMove = false;
+    public int radius = 3;
+    public LayerMask detectionLayer;
 
     public GameObject otherPlayer;
 
@@ -18,7 +17,7 @@ public class Interactions : NetworkBehaviour
     GameObject lastSelectedField;
 
     //Lists
-    List<GameObject> selectedFields;
+    public List<GameObject> selectedFields;
 
 
     //References
@@ -70,8 +69,6 @@ public class Interactions : NetworkBehaviour
 
             //Get other player
             RpcSetOtherPlayeerVariable();
-            //if (isServer) otherPlayer = NetworkServer.connections[1].identity.gameObject;
-            //else if(isClient)  otherPlayer = NetworkServer.connections[0].identity.gameObject;
 
             firstTileSpawned = true;
         }
@@ -93,8 +90,6 @@ public class Interactions : NetworkBehaviour
                 //Checks if player can move on this selected field
                 if (Checks.CanMoveHere(selectedFieldState, thisPlayerTag))
                 {
-                    SwitchPlayerAtMove();
-
                     //Raise up
                     selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                     Move(selectedFieldState);
@@ -139,12 +134,34 @@ public class Interactions : NetworkBehaviour
             CmdSetFieldState(selectedField.GetComponent<NetworkIdentity>(), thisPlayerTag);
             SwitchPlayerAtMove();
         }
+        else
+        {
+            Collider[] surroundingFields = GetSurroundingFields();
+            if(surroundingFields.Length > 0)
+            {
+                Debug.Log(surroundingFields.Length);
+
+                foreach(Collider field in surroundingFields)
+                {
+                    if (field.gameObject.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Clear)
+                    {
+                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Select);
+                        selectedFields.Add(field.gameObject);
+                    }
+                    else if (field.gameObject.GetComponent<FieldData>().fieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag))
+                    {
+                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
+                        selectedFields.Add(field.gameObject);
+                    }
+                }
+            }
+        }
     }
 
     //Gets the surrounding fields of the selected object
     Collider[] GetSurroundingFields()
     {
-        Collider[] fieldsFound = Physics.OverlapSphere(selectedField.transform.position, 2, detectionLayer);
+        Collider[] fieldsFound = Physics.OverlapSphere(selectedField.transform.position, radius, detectionLayer);
         return fieldsFound;
     }
 
@@ -161,15 +178,15 @@ public class Interactions : NetworkBehaviour
             selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
         }
 
+        //Switch player
+        RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
+
         //Enable other player
         if (otherPlayer != null)
         {
-            otherPlayer.SetActive(true);
-            gameObject.SetActive(true);
+            otherPlayer.GetComponent<Interactions>().enabled = true;
+            enabled = false;
         }
-
-        //Switch player
-        RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
     }
 
 

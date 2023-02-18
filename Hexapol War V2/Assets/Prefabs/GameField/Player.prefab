@@ -49,9 +49,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   thisPlayerTag: 0
+  radius: 1
   detectionLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 64
   otherPlayer: {fileID: 0}
 --- !u!114 &4407027616088828493
 MonoBehaviour:

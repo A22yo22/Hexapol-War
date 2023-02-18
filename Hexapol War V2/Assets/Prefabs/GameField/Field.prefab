@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1993216674659252768}
   - component: {fileID: 1993216674659252769}
   - component: {fileID: -8458996977581492268}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17460112550e4d04481eba22f5aa4120, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldMode: 0
+  fieldState: 0
   clearColor: {fileID: 2100000, guid: 3ee3733b63c88934a9b87e9344aa927a, type: 2}
   blueColor: {fileID: 2100000, guid: 7831e519510772b459b632d18a66d9c1, type: 2}
   redClor: {fileID: 2100000, guid: ab35b60bb04891542bb432ee9b031c89, type: 2}
