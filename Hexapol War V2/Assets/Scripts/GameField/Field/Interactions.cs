@@ -11,7 +11,7 @@ public class Interactions : NetworkBehaviour
     public int radius = 3;
     public LayerMask detectionLayer;
 
-    public GameObject otherPlayer;
+    public Interactions otherPlayer;
 
     GameObject selectedField;
     GameObject lastSelectedField;
@@ -30,7 +30,7 @@ public class Interactions : NetworkBehaviour
 
         //Asign playerTag
         if (isServer) thisPlayerTag = FieldData.CaptureState.Player1;
-        else thisPlayerTag = FieldData.CaptureState.Player2;
+        else if (isClient) thisPlayerTag = FieldData.CaptureState.Player2;
 
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
@@ -38,7 +38,7 @@ public class Interactions : NetworkBehaviour
         //Get lobby manger
         lobbyManager = FindObjectOfType<LobbyManager>();
 
-        
+
     }
 
     bool firstTileSpawned;
@@ -68,12 +68,16 @@ public class Interactions : NetworkBehaviour
             lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
 
             //Get other player
-            RpcSetOtherPlayeerVariable();
+            CmdSetOtherPlayeerVariable();
 
             firstTileSpawned = true;
         }
-        
-        if(Input.GetMouseButtonDown(0))
+        else if (FindObjectOfType<LobbyManager>().playerReady == 2)
+        {
+            if (isClientOnly) enabled = false;
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             //Makes gets the field you've clicked on
             RaycastHit hit;
@@ -107,7 +111,10 @@ public class Interactions : NetworkBehaviour
                     //Reset selected fields
                     for (int i = 0; i < selectedFields.Count; i++)
                     {
-                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                        if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                        {
+                            selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                        }
                     }
                 }
             }
@@ -121,7 +128,10 @@ public class Interactions : NetworkBehaviour
             //Reset selected fields
             for (int i = 0; i < selectedFields.Count; i++)
             {
-                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                {
+                    selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                }
             }
         }
     }
@@ -182,12 +192,12 @@ public class Interactions : NetworkBehaviour
         }
 
         //Switch player
-        RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
+        CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
 
         //Enable other player
         if (otherPlayer != null)
         {
-            otherPlayer.GetComponent<Interactions>().enabled = true;
+            otherPlayer.enabled = true;
             enabled = false;
         }
     }
@@ -241,20 +251,25 @@ public class Interactions : NetworkBehaviour
     }
 
     //Switch player at move 
-    [ClientRpc]
-    public void RpcSetPlayerAtMove(FieldData.CaptureState playerToWhoWillHaveTheMove)
+    [Command]
+    public void CmdSetPlayerAtMove(FieldData.CaptureState playerToWhoWillHaveTheMove)
     {
         FindObjectOfType<FieldManager>().playerAtMove = playerToWhoWillHaveTheMove;
     }
 
     //Sets other player variable
+    [Command]
+    public void CmdSetOtherPlayeerVariable()
+    {
+        RpcSetOtherPlayeerVariable();
+    }
     [ClientRpc]
     public void RpcSetOtherPlayeerVariable()
     {
         List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
 
-        playersConnected[0].otherPlayer = playersConnected[1].gameObject;
-        playersConnected[1].otherPlayer = playersConnected[0].gameObject;
+        playersConnected[0].otherPlayer = playersConnected[1];
+        playersConnected[1].otherPlayer = playersConnected[0];
     }
 
 }
