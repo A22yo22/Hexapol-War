@@ -62,7 +62,7 @@ public class Interactions : NetworkBehaviour
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
-                RpcSetPlayer1(gameObject);
+                CmdSetPlayer1(gameObject);
 
                 for (int i = 0; i < fieldSpawner.hexagonsSpawned.Count; i++)
                 {
@@ -287,8 +287,8 @@ public class Interactions : NetworkBehaviour
     }
 
     //Set players in field manager
-    [ClientRpc]
-    public void RpcSetPlayer1(GameObject player1)
+    [Command]
+    public void CmdSetPlayer1(GameObject player1)
     {
         FindObjectOfType<FieldManager>().players1 = player1;
     }
