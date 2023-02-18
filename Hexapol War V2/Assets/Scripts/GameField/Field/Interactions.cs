@@ -16,6 +16,8 @@ public class Interactions : NetworkBehaviour
     GameObject selectedField;
     GameObject lastSelectedField;
 
+    public bool canMove;
+
     //Lists
     public List<GameObject> selectedFields;
 
@@ -36,8 +38,6 @@ public class Interactions : NetworkBehaviour
         else if (isClientOnly)
         {
             thisPlayerTag = FieldData.CaptureState.Player2;
-
-            CmdSetPlayer2(gameObject);
         }
 
         //Add event to ready up button
@@ -62,7 +62,7 @@ public class Interactions : NetworkBehaviour
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
-                CmdSetPlayer1(gameObject);
+                //CmdSetPlayer1(gameObject);
 
                 for (int i = 0; i < fieldSpawner.hexagonsSpawned.Count; i++)
                 {
@@ -71,7 +71,7 @@ public class Interactions : NetworkBehaviour
             }
             else if (isClientOnly)
             {
-                CmdSetPlayer2(gameObject);
+                //CmdSetPlayer2(gameObject);
             }
 
             if(lobbyManager.fieldssSpawned.Count == 0) return;
@@ -88,63 +88,66 @@ public class Interactions : NetworkBehaviour
         }
         else if (FindObjectOfType<LobbyManager>().playerReady == 2)
         {
-            if (isClientOnly) enabled = false;
+            if (isClientOnly) canMove = false;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (canMove)
         {
-            //Makes gets the field you've clicked on
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (Input.GetMouseButtonDown(0))
             {
-                //Sets last selected field to current selcted 
-                if (selectedField != null) lastSelectedField = selectedField;
-                selectedField = hit.transform.gameObject;
-
-                //Gets the state of the selected field
-                FieldData.CaptureState selectedFieldState = Checks.GetFieldState(hit.transform.gameObject);
-
-                //Checks if player can move on this selected field
-                if (Checks.CanMoveHere(selectedFieldState, thisPlayerTag))
+                //Makes gets the field you've clicked on
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
                 {
-                    //Raise up
-                    selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
-                    Move(selectedFieldState);
-                }
-                else if (selectedFieldState != FieldData.CaptureState.Clear)    //Attack
-                {
-                    Attack();
-                }
-                else    //Clear
-                {
-                    //Reset used field possitions
-                    selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-                    lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+                    //Sets last selected field to current selcted 
+                    if (selectedField != null) lastSelectedField = selectedField;
+                    selectedField = hit.transform.gameObject;
 
-                    //Reset selected fields
-                    for (int i = 0; i < selectedFields.Count; i++)
+                    //Gets the state of the selected field
+                    FieldData.CaptureState selectedFieldState = Checks.GetFieldState(hit.transform.gameObject);
+
+                    //Checks if player can move on this selected field
+                    if (Checks.CanMoveHere(selectedFieldState, thisPlayerTag))
                     {
-                        if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                        //Raise up
+                        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
+                        Move(selectedFieldState);
+                    }
+                    else if (selectedFieldState != FieldData.CaptureState.Clear)    //Attack
+                    {
+                        Attack();
+                    }
+                    else    //Clear
+                    {
+                        //Reset used field possitions
+                        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+                        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+                        //Reset selected fields
+                        for (int i = 0; i < selectedFields.Count; i++)
                         {
-                            selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                            {
+                                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                            }
                         }
                     }
                 }
             }
-        }
-        else if(Input.GetMouseButtonDown(1))
-        {
-            //Reset used field possitions
-            selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-            lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-            //Reset selected fields
-            for (int i = 0; i < selectedFields.Count; i++)
+            else if (Input.GetMouseButtonDown(1))
             {
-                if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                //Reset used field possitions
+                selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+                lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+                //Reset selected fields
+                for (int i = 0; i < selectedFields.Count; i++)
                 {
-                    selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                    if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                    {
+                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                    }
                 }
             }
         }
@@ -282,8 +285,8 @@ public class Interactions : NetworkBehaviour
     {
         List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
 
-        playersConnected[0].otherPlayer = playersConnected[1];
-        playersConnected[1].otherPlayer = playersConnected[0];
+        FindObjectOfType<FieldManager>().players1 = playersConnected[0].gameObject;
+        FindObjectOfType<FieldManager>().players2 = playersConnected[1].gameObject;
     }
 
     //Set players in field manager
