@@ -8,6 +8,8 @@ public class Interactions : NetworkBehaviour
 {
     public FieldData.CaptureState thisPlayerTag;
 
+    bool madeMove = false;
+
     GameObject selectedTile;
     GameObject lastSelectedField;
 
@@ -74,9 +76,9 @@ public class Interactions : NetworkBehaviour
 
                 FieldData.CaptureState clickedState = Checks.GetFieldState(hit.transform.gameObject);
 
-                if (CanPlaceHere(clickedState))
+                if (Checks.CanPlaceHere(clickedState, thisPlayerTag))
                 {
-                    MadeMove();
+                    SwitchPlayerAtMove();
 
                     selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0.4f, selectedTile.transform.position.z);
                     Place(clickedState);
@@ -89,6 +91,11 @@ public class Interactions : NetworkBehaviour
         }
     }
 
+    //Switches the player at move to the next one
+    public void SwitchPlayerAtMove()
+    {
+        selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0f, selectedTile.transform.position.z);
+    }
 
     //Events
     public void Attack()
@@ -139,7 +146,7 @@ public class Interactions : NetworkBehaviour
 public class Checks
 {
     //Checks if player can place on selected field
-    public bool CanPlaceHere(FieldData.CaptureState state, FieldData.CaptureState playerTag)
+    public static bool CanPlaceHere(FieldData.CaptureState state, FieldData.CaptureState playerTag)
     {
         if (state == playerTag || state == FieldData.CaptureState.Select) return true;
 
@@ -147,7 +154,7 @@ public class Checks
     }
 
     //Gets the state of fields
-    public FieldData.CaptureState GetFieldState(GameObject field)
+    public static FieldData.CaptureState GetFieldState(GameObject field)
     {
         FieldData fieldData = field.GetComponent<FieldData>();
         if(fieldData != null)
