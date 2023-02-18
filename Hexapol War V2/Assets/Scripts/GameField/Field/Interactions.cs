@@ -81,7 +81,7 @@ public class Interactions : NetworkBehaviour
                     SwitchPlayerAtMove();
 
                     selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0.4f, selectedTile.transform.position.z);
-                    Place(clickedState);
+                    //Place(clickedState);
                 }
                 else if (clickedState != FieldData.CaptureState.Clear)
                 {
@@ -95,6 +95,9 @@ public class Interactions : NetworkBehaviour
     public void SwitchPlayerAtMove()
     {
         selectedTile.transform.position = new Vector3(selectedTile.transform.position.x, 0f, selectedTile.transform.position.z);
+
+
+        RpcSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
     }
 
     //Events
@@ -140,6 +143,13 @@ public class Interactions : NetworkBehaviour
     {
         identity.GetComponent<FieldData>().SwitchCaptureState(state);
     }
+
+    //Switch player at move 
+    [ClientRpc]
+    public void RpcSetPlayerAtMove(FieldData.CaptureState playerToWhoWillHaveTheMove)
+    {
+        FindObjectOfType<FieldManager>().playerAtMove = playerToWhoWillHaveTheMove;
+    }
 }
 
 //Checks for game field
@@ -163,5 +173,18 @@ public class Checks
         }
 
         return FieldData.CaptureState.Clear;
+    }
+
+    //Returnes the opposite of the player tag given
+    public static FieldData.CaptureState GetOppositeOfPlayerTag(FieldData.CaptureState playerTag)
+    {
+        if (playerTag == FieldData.CaptureState.Player1)
+        {
+            return FieldData.CaptureState.Player2;
+        }
+        else
+        {
+            return FieldData.CaptureState.Player1;
+        }
     }
 }
