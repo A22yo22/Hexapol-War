@@ -5,7 +5,7 @@ using UnityEngine;
 public class FieldData : MonoBehaviour
 {
     [Header("Properties")]
-    public CaptureState fieldMode = CaptureState.Clear;
+    public CaptureState fieldState = CaptureState.Clear;
 
     [Header("Colors")]
     [SerializeField] Material clearColor;
@@ -27,22 +27,22 @@ public class FieldData : MonoBehaviour
         {
             case CaptureState.Clear:
                 GetComponent<MeshRenderer>().material = clearColor;
-                fieldMode = CaptureState.Clear;
+                fieldState = CaptureState.Clear;
                 break;
 
             case CaptureState.Player1:
                 GetComponent<MeshRenderer>().material = blueColor;
-                fieldMode = CaptureState.Player1;
+                fieldState = CaptureState.Player1;
                 break;
 
             case CaptureState.Player2:
                 GetComponent<MeshRenderer>().material = redClor;
-                fieldMode = CaptureState.Player2;
+                fieldState = CaptureState.Player2;
                 break;
 
             case CaptureState.Select:
                 GetComponent<MeshRenderer>().material = yellowClor;
-                fieldMode = CaptureState.Select;
+                fieldState = CaptureState.Select;
                 break;
         }
     }
