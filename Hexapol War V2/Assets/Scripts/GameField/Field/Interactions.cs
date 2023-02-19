@@ -110,7 +110,7 @@ public class Interactions : NetworkBehaviour
                     }
                     else if (selectedFieldState != FieldData.CaptureState.Clear)    //Attack
                     {
-                        Attack();
+                        Attack(selectedField);
                     }
                     else    //Clear
                     {
@@ -225,9 +225,9 @@ public class Interactions : NetworkBehaviour
 
 
     //Events
-    public void Attack()
+    public void Attack(GameObject fieldToPlayAbout)
     {
-        NetworkManager.singleton.StopClient();
+        CmdStartMinigame(fieldToPlayAbout);
     }
 
 
@@ -236,6 +236,24 @@ public class Interactions : NetworkBehaviour
 
     //Network section
 
+    //Mini game stuff
+    //Start minigame
+    [Command]
+    public void CmdStartMinigame(GameObject fieldToPlayAbout)
+    {
+        RpcStartMinigame(fieldToPlayAbout);
+    }
+    [ClientRpc]
+    public void RpcStartMinigame(GameObject fieldToPlayAbout)
+    {
+        FindObjectOfType<MiniGameManager>().fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
+        FindObjectOfType<MiniGameManager>().attackingPlayer = FindObjectOfType<FieldManager>().playerAtMove;
+        
+        FindObjectOfType<MiniGameManager>().StartMiniGame();
+    }
+
+
+    //Field stuff
     //Get spawned fields
     [Command]
     public void CmdAddHexagons(NetworkIdentity id)
