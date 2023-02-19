@@ -129,7 +129,7 @@ public class Interactions : NetworkBehaviour
                     }
                 }
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetMouseButtonDown(1))   //Reset selected fields
             {
                 //Reset used field possitions
                 selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
@@ -227,8 +227,9 @@ public class Interactions : NetworkBehaviour
     //Events
     public void Attack()
     {
-        Destroy(gameObject);
+        NetworkManager.singleton.StopClient();
     }
+
 
 
 
@@ -291,8 +292,6 @@ public class Interactions : NetworkBehaviour
         FindObjectOfType<FieldManager>().players1 = playersConnected[1];
         FindObjectOfType<FieldManager>().players2 = playersConnected[0];
     }
-
-    //Set players in field manager
 
     //Set player who can move
     [Command]
