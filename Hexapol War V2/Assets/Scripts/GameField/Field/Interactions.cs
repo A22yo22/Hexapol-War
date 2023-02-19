@@ -16,7 +16,7 @@ public class Interactions : NetworkBehaviour
     GameObject selectedField;
     GameObject lastSelectedField;
 
-    public bool canMove;
+    public bool canMove = true;
 
     //Lists
     public List<GameObject> selectedFields;
@@ -62,16 +62,10 @@ public class Interactions : NetworkBehaviour
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
-                //CmdSetPlayer1(gameObject);
-
                 for (int i = 0; i < fieldSpawner.hexagonsSpawned.Count; i++)
                 {
                     CmdAddHexagons(fieldSpawner.hexagonsSpawned[i].GetComponent<NetworkIdentity>());
                 }
-            }
-            else if (isClientOnly)
-            {
-                //CmdSetPlayer2(gameObject);
             }
 
             if(lobbyManager.fieldssSpawned.Count == 0) return;
@@ -211,6 +205,16 @@ public class Interactions : NetworkBehaviour
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
 
+
+        if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) == FieldData.CaptureState.Player1)
+        {
+            RpcSetPlayer1ToMove();
+        }
+        else if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) != FieldData.CaptureState.Player2)
+        {
+            RpcSetPlayer2ToMove();
+        }
+
         //Enable other player
         if (otherPlayer != null)
         {
@@ -285,20 +289,22 @@ public class Interactions : NetworkBehaviour
     {
         List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
 
-        FindObjectOfType<FieldManager>().players1 = playersConnected[0].gameObject;
-        FindObjectOfType<FieldManager>().players2 = playersConnected[1].gameObject;
+        FindObjectOfType<FieldManager>().players1 = playersConnected[0];
+        FindObjectOfType<FieldManager>().players2 = playersConnected[1];
     }
 
     //Set players in field manager
-    [Command]
-    public void CmdSetPlayer1(GameObject player1)
+    [ClientRpc]
+    public void RpcSetPlayer1ToMove()
     {
-        FindObjectOfType<FieldManager>().players1 = player1;
+        FindObjectOfType<FieldManager>().players1.canMove = true;
+        FindObjectOfType<FieldManager>().players2.canMove = false;
     }
-    [Command]
-    public void CmdSetPlayer2(GameObject player2)
+    [ClientRpc]
+    public void RpcSetPlayer2ToMove()
     {
-        FindObjectOfType<FieldManager>().players2 = player2;
+        FindObjectOfType<FieldManager>().players2.canMove = true;
+        FindObjectOfType<FieldManager>().players1.canMove = false;
     }
 }
 

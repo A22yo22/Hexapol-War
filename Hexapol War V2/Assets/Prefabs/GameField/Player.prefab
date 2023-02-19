@@ -54,6 +54,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   otherPlayer: {fileID: 0}
+  canMove: 1
+  selectedFields: []
 --- !u!114 &4407027616088828493
 MonoBehaviour:
   m_ObjectHideFlags: 0
