@@ -246,10 +246,10 @@ public class Interactions : NetworkBehaviour
     [ClientRpc]
     public void RpcStartMinigame(GameObject fieldToPlayAbout)
     {
-        FindObjectOfType<MiniGameManager>().fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
-        FindObjectOfType<MiniGameManager>().attackingPlayer = FindObjectOfType<FieldManager>().playerAtMove;
+        FindObjectOfType<MinigameManager>().fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
+        FindObjectOfType<MinigameManager>().attackingPlayer = FindObjectOfType<FieldManager>().playerAtMove;
         
-        FindObjectOfType<MiniGameManager>().StartMiniGame();
+        FindObjectOfType<MinigameManager>().StartMiniGame();
     }
 
 
