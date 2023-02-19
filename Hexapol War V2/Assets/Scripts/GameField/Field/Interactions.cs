@@ -89,19 +89,6 @@ public class Interactions : NetworkBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //Reset used field possitions
-                if(selectedField != null) selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-                if (lastSelectedField != null) lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-                //Reset selected fields
-                for (int i = 0; i < selectedFields.Count; i++)
-                {
-                    if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
-                    {
-                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
-                    }
-                }
-
                 //Makes gets the field you've clicked on
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -240,7 +227,7 @@ public class Interactions : NetworkBehaviour
     //Events
     public void Attack()
     {
-
+        Destroy(gameObject);
     }
 
 
