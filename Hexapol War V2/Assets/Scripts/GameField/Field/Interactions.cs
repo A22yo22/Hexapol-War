@@ -67,8 +67,12 @@ public class Interactions : NetworkBehaviour
                     CmdAddHexagons(fieldSpawner.hexagonsSpawned[i].GetComponent<NetworkIdentity>());
                 }
             }
+            if (isClientOnly)
+            {
+                canMove = false;
+            }
 
-            if(lobbyManager.fieldssSpawned.Count == 0) return;
+            if (lobbyManager.fieldssSpawned.Count == 0) return;
 
             //Set player start pos
             int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
@@ -82,7 +86,6 @@ public class Interactions : NetworkBehaviour
         }
         else if (FindObjectOfType<LobbyManager>().playerReady == 2)
         {
-            if (isClientOnly) canMove = false;
         }
 
         if (canMove)
@@ -205,12 +208,11 @@ public class Interactions : NetworkBehaviour
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
 
-
         if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) == FieldData.CaptureState.Player1)
         {
-            RpcSetPlayer1ToMove();
+            CmdSetPlayer1ToMove();
         }
-        else if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) != FieldData.CaptureState.Player2)
+        else if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) == FieldData.CaptureState.Player2)
         {
             RpcSetPlayer2ToMove();
         }
@@ -289,13 +291,15 @@ public class Interactions : NetworkBehaviour
     {
         List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
 
-        FindObjectOfType<FieldManager>().players1 = playersConnected[0];
-        FindObjectOfType<FieldManager>().players2 = playersConnected[1];
+        FindObjectOfType<FieldManager>().players1 = playersConnected[1];
+        FindObjectOfType<FieldManager>().players2 = playersConnected[0];
     }
 
     //Set players in field manager
-    [ClientRpc]
-    public void RpcSetPlayer1ToMove()
+
+    //Set player who can move
+    [Command]
+    public void CmdSetPlayer1ToMove()
     {
         FindObjectOfType<FieldManager>().players1.canMove = true;
         FindObjectOfType<FieldManager>().players2.canMove = false;
