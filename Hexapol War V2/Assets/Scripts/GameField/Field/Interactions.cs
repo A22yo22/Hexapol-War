@@ -84,14 +84,24 @@ public class Interactions : NetworkBehaviour
 
             firstTileSpawned = true;
         }
-        else if (FindObjectOfType<LobbyManager>().playerReady == 2)
-        {
-        }
 
         if (canMove)
         {
             if (Input.GetMouseButtonDown(0))
             {
+                //Reset used field possitions
+                if(selectedField != null) selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+                if (lastSelectedField != null) lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+                //Reset selected fields
+                for (int i = 0; i < selectedFields.Count; i++)
+                {
+                    if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+                    {
+                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+                    }
+                }
+
                 //Makes gets the field you've clicked on
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -220,8 +230,8 @@ public class Interactions : NetworkBehaviour
         //Enable other player
         if (otherPlayer != null)
         {
-            otherPlayer.enabled = true;
-            enabled = false;
+            //otherPlayer.enabled = true;
+            //enabled = false;
         }
     }
 
@@ -300,6 +310,11 @@ public class Interactions : NetworkBehaviour
     //Set player who can move
     [Command]
     public void CmdSetPlayer1ToMove()
+    {
+        RpcSetPlayer1ToMove();
+    }
+    [ClientRpc]
+    public void RpcSetPlayer1ToMove()
     {
         FindObjectOfType<FieldManager>().players1.canMove = true;
         FindObjectOfType<FieldManager>().players2.canMove = false;
