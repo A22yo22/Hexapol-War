@@ -67,9 +67,19 @@ public class Interactions : NetworkBehaviour
                     CmdAddHexagons(fieldSpawner.hexagonsSpawned[i].GetComponent<NetworkIdentity>());
                 }
             }
-            if (isClientOnly)
+            else if (isClientOnly)
             {
                 canMove = false;
+            }
+
+
+            //Set field parent
+            if (isClientOnly && FindObjectOfType<LobbyManager>().fieldssSpawned.Count != 0)
+            {
+                foreach (GameObject field in FindObjectOfType<LobbyManager>().fieldssSpawned)
+                {
+                    field.transform.SetParent(FindObjectOfType<FieldSpawner>().parent);
+                }
             }
 
             if (lobbyManager.fieldssSpawned.Count == 0) return;
@@ -232,15 +242,17 @@ public class Interactions : NetworkBehaviour
 
 
 
-
-
     //Network section
 
     //Mini game stuff
+
+
+
     //Start minigame
     [Command]
     public void CmdStartMinigame(GameObject fieldToPlayAbout)
     {
+        FindObjectOfType<MinigameManager>().OpenMiniGameame();
         RpcStartMinigame(fieldToPlayAbout);
     }
     [ClientRpc]
@@ -251,7 +263,6 @@ public class Interactions : NetworkBehaviour
         
         FindObjectOfType<MinigameManager>().StartMiniGame();
     }
-
 
     //Field stuff
     //Get spawned fields

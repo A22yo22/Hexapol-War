@@ -20,7 +20,14 @@ public class MinigameManager : NetworkBehaviour
         {
             gameFieldObject.SetActive(false);
         }
+        FindObjectOfType<RPSUiManager>().SetUp();
+    }
 
+    public void OpenMiniGameame()
+    {
         minigameRunning = Instantiate(miniGame);
+        NetworkServer.Spawn(minigameRunning);
+
+        //miniGame.GetComponent<NetworkIdentity>().AssignClientAuthority(miniGame.GetComponent<NetworkIdentity>());
     }
 }

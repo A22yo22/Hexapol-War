@@ -2,11 +2,15 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class RPSUiManager : NetworkBehaviour
 {
     public GameObject RPSUi;
+
+    public TMP_Text selectedItem;
 
     public Button rock;
     public Button paper;
@@ -14,9 +18,9 @@ public class RPSUiManager : NetworkBehaviour
 
     public void SetUp()
     {
-        rock.onClick.AddListener(CmdRockSelected);
-        paper.onClick.AddListener(CmdPaperSelected);
-        scissor.onClick.AddListener(CmdScissorSelected);
+        rock.onClick.AddListener(RockSelected);
+        paper.onClick.AddListener(PaperSelected);
+        scissor.onClick.AddListener(ScissorSelected);
     }
 
     void HideRPSUi()
@@ -24,65 +28,43 @@ public class RPSUiManager : NetworkBehaviour
         RPSUi.SetActive(false);
     }
 
-    //Network stuff
-
-    //Rock
-    [Command]
-    public void CmdRockSelected()
+    public void RockSelected()
     {
-        RpcRockSelected(FindObjectOfType<Interactions>().thisPlayerTag);
+        List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
+        foreach(RPSNetworkManager rpsManager in rpsNetworkManagers)
+        {
+            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                rpsManager.CmdSelectRPS(RPSGameManager.RPS.Rock, isServer);
+            }
+        }
+
         HideRPSUi();
     }
-    [ClientRpc]
-    public void RpcRockSelected(FieldData.CaptureState currentPlayer)
+    public void ScissorSelected()
     {
-        if (currentPlayer == FieldData.CaptureState.Player1)
+        List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
+        foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            FindObjectOfType<RPSGameManager>().player1Choice = RPSGameManager.RPS.Rock;
+            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                rpsManager.CmdSelectRPS(RPSGameManager.RPS.Scissor, isServer);
+            }
         }
-        else
-        {
-            FindObjectOfType<RPSGameManager>().player2Choice = RPSGameManager.RPS.Rock;
-        }
-    }
 
-    //Paper
-    [Command]
-    public void CmdPaperSelected()
-    {
-        RpcPaperSelected(FindObjectOfType<Interactions>().thisPlayerTag);
         HideRPSUi();
     }
-    [ClientRpc]
-    public void RpcPaperSelected(FieldData.CaptureState currentPlayer)
+    public void PaperSelected()
     {
-        if (currentPlayer == FieldData.CaptureState.Player1)
+        List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
+        foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            FindObjectOfType<RPSGameManager>().player1Choice = RPSGameManager.RPS.Paper;
+            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                rpsManager.CmdSelectRPS(RPSGameManager.RPS.Paper, isServer);
+            }
         }
-        else
-        {
-            FindObjectOfType<RPSGameManager>().player2Choice = RPSGameManager.RPS.Paper;
-        }
-    }
 
-    //Scissor
-    [Command]
-    public void CmdScissorSelected()
-    {
-        RpcScissorSelected(FindObjectOfType<Interactions>().thisPlayerTag);
         HideRPSUi();
-    }
-    [ClientRpc]
-    public void RpcScissorSelected(FieldData.CaptureState currentPlayer)
-    {
-        if (currentPlayer == FieldData.CaptureState.Player1)
-        {
-            FindObjectOfType<RPSGameManager>().player1Choice = RPSGameManager.RPS.Scissor;
-        }
-        else
-        {
-            FindObjectOfType<RPSGameManager>().player2Choice = RPSGameManager.RPS.Scissor;
-        }
     }
 }
