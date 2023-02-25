@@ -63,9 +63,9 @@ public class PlayerInteractions : NetworkBehaviour
             FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
-                for (int i = 0; i < fieldSpawner.hexagonsSpawned.Count; i++)
+                for (int i = 0; i < fieldSpawner.fieldsSpawned.Count; i++)
                 {
-                    CmdAddHexagons(fieldSpawner.hexagonsSpawned[i].GetComponent<NetworkIdentity>());
+                    CmdAddHexagons(fieldSpawner.fieldsSpawned[i].GetComponent<NetworkIdentity>());
                 }
             }
             else if (isClientOnly)
@@ -89,7 +89,7 @@ public class PlayerInteractions : NetworkBehaviour
             int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
             CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
             lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
-            GetComponent<PlayerStats>().remainingFieldsFields.Add(lastSelectedField);
+            GetComponent<PlayerStats>().remainingFields.Add(lastSelectedField);
 
             //Get other player
             CmdSetOtherPlayeerVariable();
@@ -111,7 +111,7 @@ public class PlayerInteractions : NetworkBehaviour
                     selectedField = hit.transform.gameObject;
 
                     //Gets the state of the selected field
-                    FieldData.CaptureState selectedFieldState = Checks.GetFieldState(hit.transform.gameObject);
+                    FieldData.CaptureState selectedFieldState = Checks.GetFieldState(selectedField);
 
                     //Checks if player can move on this selected field
                     if (Checks.CanMoveHere(selectedFieldState, thisPlayerTag))
@@ -120,7 +120,7 @@ public class PlayerInteractions : NetworkBehaviour
                         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                         Move(selectedFieldState);
                     }
-                    else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag) && selectedFields.IndexOf(hit.transform.gameObject) != -1)    //Attack
+                    else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag) && selectedFields.IndexOf(selectedField) != -1)    //Attack
                     {
                         Attack(selectedField);
                         SwitchPlayerAtMove();
@@ -164,6 +164,7 @@ public class PlayerInteractions : NetworkBehaviour
         if (fieldState == FieldData.CaptureState.Select)
         {
             CmdSetFieldState(selectedField.GetComponent<NetworkIdentity>(), thisPlayerTag);
+
             SwitchPlayerAtMove();
         }
         else
@@ -171,8 +172,6 @@ public class PlayerInteractions : NetworkBehaviour
             Collider[] surroundingFields = GetSurroundingFields();
             if(surroundingFields.Length > 0)
             {
-                Debug.Log(surroundingFields.Length);
-
                 foreach(Collider field in surroundingFields)
                 {
                     if (field.gameObject.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Clear)
@@ -200,7 +199,6 @@ public class PlayerInteractions : NetworkBehaviour
     //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
-        Debug.Log("Switch");
         RestSelectedFields();
 
         //Switch player
@@ -233,12 +231,9 @@ public class PlayerInteractions : NetworkBehaviour
         CmdStartMinigame(fieldToPlayAbout, lastSelectedField);
     }
 
-
-
     //Network section
 
     //Mini game stuff
-
 
 
     //Start minigame
@@ -267,7 +262,10 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcAddHexagons(NetworkIdentity id)
     {
-        FindObjectOfType<LobbyManager>().fieldssSpawned.Add(id.gameObject);
+        if (FindObjectOfType<LobbyManager>().fieldssSpawned.IndexOf(id.gameObject) == -1)
+        {
+            FindObjectOfType<LobbyManager>().fieldssSpawned.Add(id.gameObject);
+        }
     }
 
     //Lobby managment
@@ -291,6 +289,7 @@ public class PlayerInteractions : NetworkBehaviour
     public void RpcSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)
     {
         identity.GetComponent<FieldData>().SwitchCaptureState(state);
+        GetComponent<PlayerStats>().RefreshRemainingFields();
     }
 
     //Switch player at move 

@@ -18,7 +18,7 @@ public class MinigameManager : NetworkBehaviour
     {
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
-            gameFieldObject.SetActive(false);
+            gameFieldObject.transform.position = new Vector3(0, 300, 0);
         }
         FindObjectOfType<RPSUiManager>().SetUp();
     }

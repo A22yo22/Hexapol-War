@@ -31,12 +31,20 @@ public class RPSNetworkManager : NetworkBehaviour
         //Activate game field
         foreach (GameObject gameFieldObject in FindObjectOfType<MinigameManager>().gameFieldFolder)
         {
-            gameFieldObject.SetActive(true);
+            gameFieldObject.transform.position = Vector3.zero;
         }
 
         //Set winner fields
         FindObjectOfType<MinigameManager>().fieldToPlayAbout.SwitchCaptureState(winner);
         FindObjectOfType<MinigameManager>().attackingPlayer.SwitchCaptureState(winner);
+
+        foreach (PlayerInteractions playerInteractions in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (playerInteractions.thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                playerInteractions.GetComponent<PlayerStats>().RefreshRemainingFields();
+            }
+        }
 
         //Destroy runnting minigame
         Destroy(FindObjectOfType<MinigameManager>().minigameRunning);

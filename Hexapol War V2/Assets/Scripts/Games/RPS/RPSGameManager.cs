@@ -97,8 +97,7 @@ public class RPSGameManager : NetworkBehaviour
             playerWon = FieldData.CaptureState.Player2;
         }
 
-        List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
-        foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
+        foreach (RPSNetworkManager rpsManager in FindObjectsOfType<RPSNetworkManager>())
         {
             if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {

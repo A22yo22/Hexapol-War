@@ -11,7 +11,7 @@ public class FieldSpawner : NetworkBehaviour
     public int radius;
     float hexagonSize = 0;
 
-    public List<GameObject> hexagonsSpawned = new List<GameObject>();
+    public List<GameObject> fieldsSpawned = new List<GameObject>();
 
     [Header("References")]
     public GameObject hexagonPrefab;
@@ -33,7 +33,7 @@ public class FieldSpawner : NetworkBehaviour
 
                     GameObject hexagon = Instantiate(hexagonPrefab, hexPosition, Quaternion.Euler(90, 90, 0));
                     hexagon.transform.parent = parent;
-                    hexagonsSpawned.Add(hexagon);
+                    fieldsSpawned.Add(hexagon);
 
                     NetworkServer.Spawn(hexagon);
                 }
