@@ -290,6 +290,9 @@ public class PlayerInteractions : NetworkBehaviour
     {
         identity.GetComponent<FieldData>().SwitchCaptureState(state);
         GetComponent<PlayerStats>().RefreshRemainingFields();
+
+        //Start timer
+        FindAnyObjectByType<PlayerStats>().StartTimer();
     }
 
     //Switch player at move 
