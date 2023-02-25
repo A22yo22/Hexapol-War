@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerInteractions : NetworkBehaviour
 {
@@ -88,6 +89,7 @@ public class PlayerInteractions : NetworkBehaviour
             int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
             CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
             lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
+            GetComponent<PlayerStats>().remainingFieldsFields.Add(lastSelectedField);
 
             //Get other player
             CmdSetOtherPlayeerVariable();
@@ -121,6 +123,7 @@ public class PlayerInteractions : NetworkBehaviour
                     else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag) && selectedFields.IndexOf(hit.transform.gameObject) != -1)    //Attack
                     {
                         Attack(selectedField);
+                        SwitchPlayerAtMove();
                     }
                     else    //Clear
                     {
@@ -197,6 +200,7 @@ public class PlayerInteractions : NetworkBehaviour
     //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
+        Debug.Log("Switch");
         RestSelectedFields();
 
         //Switch player

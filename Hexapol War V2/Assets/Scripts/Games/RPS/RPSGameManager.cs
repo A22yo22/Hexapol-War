@@ -97,13 +97,11 @@ public class RPSGameManager : NetworkBehaviour
             playerWon = FieldData.CaptureState.Player2;
         }
 
-
         List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
         foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
             if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
-                rpsManager.gameObject.GetComponent<PlayerInteractions>().SwitchPlayerAtMove();
                 rpsManager.CmdSetWinner(playerWon);
             }
         }
