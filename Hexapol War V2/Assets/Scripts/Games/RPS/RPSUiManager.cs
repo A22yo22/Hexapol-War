@@ -33,7 +33,7 @@ public class RPSUiManager : NetworkBehaviour
         List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
         foreach(RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
                 rpsManager.CmdSelectRPS(RPSGameManager.RPS.Rock, isServer);
             }
@@ -47,7 +47,7 @@ public class RPSUiManager : NetworkBehaviour
         List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
         foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
                 rpsManager.CmdSelectRPS(RPSGameManager.RPS.Scissor, isServer);
             }
@@ -61,7 +61,7 @@ public class RPSUiManager : NetworkBehaviour
         List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
         foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
                 rpsManager.CmdSelectRPS(RPSGameManager.RPS.Paper, isServer);
             }

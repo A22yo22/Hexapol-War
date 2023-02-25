@@ -66,11 +66,10 @@ public class RPSGameManager : NetworkBehaviour
 
         if (player1Choice == player2Choice)
         {
-            //Do nothing when same
-            return;
-            //FindObjectOfType<RPSNetworkManager>().CmdTellWinner(FieldData.CaptureState.Clear);
+            playerWon = FieldData.CaptureState.Clear;
         }
 
+        //Player One won
         else if (player1Choice == RPS.Rock && player2Choice == RPS.Scissor)
         {
             playerWon = FieldData.CaptureState.Player1;
@@ -85,7 +84,6 @@ public class RPSGameManager : NetworkBehaviour
         }
 
         //Player two winns
-
         else if (player1Choice == RPS.Scissor && player2Choice == RPS.Rock)
         {
             playerWon = FieldData.CaptureState.Player2;
@@ -103,8 +101,9 @@ public class RPSGameManager : NetworkBehaviour
         List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
         foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
         {
-            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
+                rpsManager.gameObject.GetComponent<PlayerInteractions>().SwitchPlayerAtMove();
                 rpsManager.CmdSetWinner(playerWon);
             }
         }

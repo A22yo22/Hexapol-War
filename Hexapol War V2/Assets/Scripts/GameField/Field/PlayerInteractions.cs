@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Interactions : NetworkBehaviour
+public class PlayerInteractions : NetworkBehaviour
 {
     public FieldData.CaptureState thisPlayerTag;
 
     public int radius = 3;
     public LayerMask detectionLayer;
 
-    public Interactions otherPlayer;
+    public PlayerInteractions otherPlayer;
 
     GameObject selectedField;
     GameObject lastSelectedField;
@@ -118,7 +118,7 @@ public class Interactions : NetworkBehaviour
                         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                         Move(selectedFieldState);
                     }
-                    else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag))    //Attack
+                    else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag) && selectedFields.IndexOf(hit.transform.gameObject) != -1)    //Attack
                     {
                         Attack(selectedField);
                     }
@@ -305,7 +305,7 @@ public class Interactions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetOtherPlayeerVariable()
     {
-        List<Interactions> playersConnected = FindObjectsOfType<Interactions>().ToList();
+        List<PlayerInteractions> playersConnected = FindObjectsOfType<PlayerInteractions>().ToList();
 
         FindObjectOfType<FieldManager>().players1 = playersConnected[1];
         FindObjectOfType<FieldManager>().players2 = playersConnected[0];
