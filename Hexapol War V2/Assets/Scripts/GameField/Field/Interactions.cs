@@ -118,43 +118,41 @@ public class Interactions : NetworkBehaviour
                         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                         Move(selectedFieldState);
                     }
-                    else if (selectedFieldState == FieldData.CaptureState.Enemy)    //Attack
+                    else if (selectedFieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag))    //Attack
                     {
                         Attack(selectedField);
                     }
                     else    //Clear
                     {
-                        //Reset used field possitions
-                        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-                        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-                        //Reset selected fields
-                        for (int i = 0; i < selectedFields.Count; i++)
-                        {
-                            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
-                            {
-                                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
-                            }
-                        }
+                        RestSelectedFields();
                     }
                 }
             }
             else if (Input.GetMouseButtonDown(1))   //Reset selected fields
             {
-                //Reset used field possitions
-                selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-                lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-                //Reset selected fields
-                for (int i = 0; i < selectedFields.Count; i++)
-                {
-                    if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
-                    {
-                        selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
-                    }
-                }
+                RestSelectedFields();
             }
         }
+    }
+
+    //Resets the selected fields
+    public void RestSelectedFields()
+    {
+        //Reset used field possitions
+        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+        //Reset selected fields
+        for (int i = 0; i < selectedFields.Count; i++)
+        {
+            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+            {
+                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+            }
+        }
+
+        //Clear List
+        selectedFields.RemoveRange(0, selectedFields.Count);
     }
 
     //Move player to selected field
@@ -181,7 +179,7 @@ public class Interactions : NetworkBehaviour
                     }
                     else if (field.gameObject.GetComponent<FieldData>().fieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag))
                     {
-                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Select);
+                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
                         selectedFields.Add(field.gameObject);
                     }
                 }
@@ -199,18 +197,7 @@ public class Interactions : NetworkBehaviour
     //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
-        //Reset used field possitions
-        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-        //Reset selected fields
-        for(int i = 0; i < selectedFields.Count; i++)
-        {
-            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
-            {
-                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
-            }
-        }
+        RestSelectedFields();
 
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
@@ -237,18 +224,7 @@ public class Interactions : NetworkBehaviour
     //Events
     public void Attack(GameObject fieldToPlayAbout)
     {
-        //Reset used field possitions
-        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
-
-        //Reset selected fields
-        for (int i = 0; i < selectedFields.Count; i++)
-        {
-            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
-            {
-                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
-            }
-        }
+        RestSelectedFields();
 
         CmdStartMinigame(fieldToPlayAbout, lastSelectedField);
     }
