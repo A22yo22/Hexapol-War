@@ -52,5 +52,47 @@ public class RPSGameManager : NetworkBehaviour
         }
     
         howManyPlayersChose++;
+
+        if (howManyPlayersChose >= 2)
+        {
+            CheckResults();
+        }
+    }
+
+    void CheckResults()
+    {
+        if (player1Choice == player2Choice)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Same");
+        }
+
+        if (player1Choice == RPS.Rock && player2Choice == RPS.Scissor)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+        }
+        else if (player1Choice == RPS.Scissor && player2Choice == RPS.Paper)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+        }
+        else if (player1Choice == RPS.Paper && player2Choice == RPS.Rock)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+        }
+
+        //Player two winns
+
+        else if (player1Choice == RPS.Scissor && player2Choice == RPS.Rock)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+        }
+        else if (player1Choice == RPS.Paper && player2Choice == RPS.Scissor)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+        }
+        else if (player1Choice == RPS.Rock && player2Choice == RPS.Paper)
+        {
+            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+        }
+        
     }
 }
