@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RPSNetworkManager : NetworkBehaviour
 {
+    //tell the other player the selected rps of the current player
     [Command]
     public void CmdSelectRPS(RPSGameManager.RPS choice, bool isPlayer1)
     {

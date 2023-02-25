@@ -8,8 +8,11 @@ public class RPSGameManager : NetworkBehaviour
     [SyncVar] public RPS player1Choice;
     [SyncVar] public RPS player2Choice;
 
+    [SyncVar] public int howManyPlayersChose;
+
     public enum RPS
     {
+        None,
         Rock,
         Paper,
         Scissor
@@ -47,5 +50,7 @@ public class RPSGameManager : NetworkBehaviour
                 player2Choice = RPS.Scissor;
             }
         }
+    
+        howManyPlayersChose++;
     }
 }
