@@ -40,6 +40,7 @@ public class RPSUiManager : NetworkBehaviour
         }
 
         HideRPSUi();
+        selectedItem.text += ": Rock";
     }
     public void ScissorSelected()
     {
@@ -53,6 +54,7 @@ public class RPSUiManager : NetworkBehaviour
         }
 
         HideRPSUi();
+        selectedItem.text += ": Scissor";
     }
     public void PaperSelected()
     {
@@ -66,5 +68,6 @@ public class RPSUiManager : NetworkBehaviour
         }
 
         HideRPSUi();
+        selectedItem.text += ": Paper";
     }
 }

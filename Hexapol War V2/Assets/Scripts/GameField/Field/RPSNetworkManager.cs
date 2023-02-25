@@ -29,5 +29,6 @@ public class RPSNetworkManager : NetworkBehaviour
     public void RpcTellWinner(string winner)
     {
         Debug.Log(winner);
+        FindObjectOfType<RPSUiManager>().selectedItem.text = winner;
     }
 }
