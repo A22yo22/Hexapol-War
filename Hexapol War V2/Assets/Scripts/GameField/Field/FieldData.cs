@@ -18,7 +18,8 @@ public class FieldData : MonoBehaviour
         Clear,
         Player1,
         Player2,
-        Select
+        Select,
+        Enemy
     }
 
     public void SwitchCaptureState(CaptureState state)

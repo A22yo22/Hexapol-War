@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RPSGameManager : NetworkBehaviour
@@ -61,38 +62,51 @@ public class RPSGameManager : NetworkBehaviour
 
     void CheckResults()
     {
+        FieldData.CaptureState playerWon = FieldData.CaptureState.Clear;
+
         if (player1Choice == player2Choice)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Same");
+            //Do nothing when same
+            return;
+            //FindObjectOfType<RPSNetworkManager>().CmdTellWinner(FieldData.CaptureState.Clear);
         }
 
-        if (player1Choice == RPS.Rock && player2Choice == RPS.Scissor)
+        else if (player1Choice == RPS.Rock && player2Choice == RPS.Scissor)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+            playerWon = FieldData.CaptureState.Player1;
         }
         else if (player1Choice == RPS.Scissor && player2Choice == RPS.Paper)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+            playerWon = FieldData.CaptureState.Player1;
         }
         else if (player1Choice == RPS.Paper && player2Choice == RPS.Rock)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 1 won");
+            playerWon = FieldData.CaptureState.Player1;
         }
 
         //Player two winns
 
         else if (player1Choice == RPS.Scissor && player2Choice == RPS.Rock)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+            playerWon = FieldData.CaptureState.Player2;
         }
         else if (player1Choice == RPS.Paper && player2Choice == RPS.Scissor)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+            playerWon = FieldData.CaptureState.Player2;
         }
         else if (player1Choice == RPS.Rock && player2Choice == RPS.Paper)
         {
-            FindObjectOfType<RPSNetworkManager>().CmdTellWinner("Player 2 won");
+            playerWon = FieldData.CaptureState.Player2;
         }
-        
+
+
+        List<RPSNetworkManager> rpsNetworkManagers = FindObjectsOfType<RPSNetworkManager>().ToList();
+        foreach (RPSNetworkManager rpsManager in rpsNetworkManagers)
+        {
+            if (rpsManager.gameObject.GetComponent<Interactions>().thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                rpsManager.CmdSetWinner(playerWon);
+            }
+        }
     }
 }

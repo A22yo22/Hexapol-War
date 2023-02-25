@@ -118,7 +118,7 @@ public class Interactions : NetworkBehaviour
                         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0.4f, selectedField.transform.position.z);
                         Move(selectedFieldState);
                     }
-                    else if (selectedFieldState != FieldData.CaptureState.Clear)    //Attack
+                    else if (selectedFieldState == FieldData.CaptureState.Enemy)    //Attack
                     {
                         Attack(selectedField);
                     }
@@ -181,7 +181,7 @@ public class Interactions : NetworkBehaviour
                     }
                     else if (field.gameObject.GetComponent<FieldData>().fieldState == Checks.GetOppositeOfPlayerTag(thisPlayerTag))
                     {
-                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
+                        field.gameObject.GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Select);
                         selectedFields.Add(field.gameObject);
                     }
                 }
@@ -237,7 +237,20 @@ public class Interactions : NetworkBehaviour
     //Events
     public void Attack(GameObject fieldToPlayAbout)
     {
-        CmdStartMinigame(fieldToPlayAbout);
+        //Reset used field possitions
+        selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
+        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+
+        //Reset selected fields
+        for (int i = 0; i < selectedFields.Count; i++)
+        {
+            if (selectedFields[i].GetComponent<FieldData>().fieldState == FieldData.CaptureState.Select)
+            {
+                selectedFields[i].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Clear);
+            }
+        }
+
+        CmdStartMinigame(fieldToPlayAbout, lastSelectedField);
     }
 
 
@@ -250,16 +263,16 @@ public class Interactions : NetworkBehaviour
 
     //Start minigame
     [Command]
-    public void CmdStartMinigame(GameObject fieldToPlayAbout)
+    public void CmdStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
     {
         FindObjectOfType<MinigameManager>().OpenMiniGameame();
-        RpcStartMinigame(fieldToPlayAbout);
+        RpcStartMinigame(fieldToPlayAbout, attackingPlayer);
     }
     [ClientRpc]
-    public void RpcStartMinigame(GameObject fieldToPlayAbout)
+    public void RpcStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
     {
         FindObjectOfType<MinigameManager>().fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
-        FindObjectOfType<MinigameManager>().attackingPlayer = FindObjectOfType<FieldManager>().playerAtMove;
+        FindObjectOfType<MinigameManager>().attackingPlayer = attackingPlayer.GetComponent<FieldData>();
         
         FindObjectOfType<MinigameManager>().StartMiniGame();
     }

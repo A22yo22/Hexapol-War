@@ -6,12 +6,12 @@ using UnityEngine;
 public class MinigameManager : NetworkBehaviour
 {
     public FieldData fieldToPlayAbout;
-    public FieldData.CaptureState attackingPlayer;
+    public FieldData attackingPlayer;
 
     public List<GameObject> gameFieldFolder;
     public GameObject miniGame;
 
-    GameObject minigameRunning;
+    public GameObject minigameRunning;
 
     //Starts a minigame
     public void StartMiniGame()
@@ -27,7 +27,5 @@ public class MinigameManager : NetworkBehaviour
     {
         minigameRunning = Instantiate(miniGame);
         NetworkServer.Spawn(minigameRunning);
-
-        //miniGame.GetComponent<NetworkIdentity>().AssignClientAuthority(miniGame.GetComponent<NetworkIdentity>());
     }
 }

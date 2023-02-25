@@ -20,15 +20,25 @@ public class RPSNetworkManager : NetworkBehaviour
 
     //Tell all player who won
     [Command]
-    public void CmdTellWinner(string winner)
+    public void CmdSetWinner(FieldData.CaptureState winner)
     {
         RpcTellWinner(winner);
     }
 
     [ClientRpc]
-    public void RpcTellWinner(string winner)
+    public void RpcTellWinner(FieldData.CaptureState winner)
     {
-        Debug.Log(winner);
-        FindObjectOfType<RPSUiManager>().selectedItem.text = winner;
+        //Activate game field
+        foreach (GameObject gameFieldObject in FindObjectOfType<MinigameManager>().gameFieldFolder)
+        {
+            gameFieldObject.SetActive(true);
+        }
+
+        //Set winner fields
+        FindObjectOfType<MinigameManager>().fieldToPlayAbout.SwitchCaptureState(winner);
+        FindObjectOfType<MinigameManager>().attackingPlayer.SwitchCaptureState(winner);
+
+        //Destroy runnting minigame
+        Destroy(FindObjectOfType<MinigameManager>().minigameRunning);
     }
 }
