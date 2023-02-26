@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerStats : NetworkBehaviour
 {
     public float time;
+    public bool gameStarted = false;
 
     public List<GameObject> remainingFields;
 
@@ -23,35 +24,60 @@ public class PlayerStats : NetworkBehaviour
     //Refresh remaining fields list
     public void RefreshRemainingFields()
     {
-        remainingFields.Clear();
+        FieldManager fieldManager = FindObjectOfType<FieldManager>();
+        fieldManager.remainingFieldsPlayer1.Clear();
+        fieldManager.remainingFieldsPlayer2.Clear();
 
-        FieldData.CaptureState thisPlayerTag = GetComponent<PlayerInteractions>().thisPlayerTag;
-        if (thisPlayerTag != FieldData.CaptureState.Clear)
+        foreach (var field in fieldManager.usedFields)
         {
-            foreach (var field in FindObjectOfType<FieldSpawner>().fieldsSpawned)
+            if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player1)
             {
-                if (field.GetComponent<FieldData>().fieldState == thisPlayerTag)
-                {
-                    remainingFields.Add(field);
-                }
+                fieldManager.remainingFieldsPlayer1.Add(field);
+            }
+            else if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player2)
+            {
+                fieldManager.remainingFieldsPlayer2.Add(field);
             }
         }
 
-        RemainingCounterCheck();
+        if (gameStarted)
+        {
+            RemainingCounterCheck();
+        }
     }
 
-    void RemainingCounterCheck()
+    public void RemainingCounterCheck()
     {
-        if (GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
+        FieldManager fieldManager = FindObjectOfType<FieldManager>();
+
+        if (fieldManager.remainingFieldsPlayer1.Count == 0)
         {
-            Debug.Log(remainingFields.Count);
-            if (remainingFields.Count <= 0)
-            {
-                CmdGameOver((int)time);
-            }
+            CmdGameOver((int)time);
+        }
+        else if (fieldManager.remainingFieldsPlayer1.Count == 0)
+        {
+            CmdGameOver((int)time);
         }
     }
 
+    //Network remaining player fields
+    
+    [Command]
+    public void CmdAddFieldTo(NetworkIdentity id)
+    {
+        RpcAddFieldTo(id);
+    }
+    [ClientRpc]
+    public void RpcAddFieldTo(NetworkIdentity id)
+    {
+        if (FindObjectOfType<FieldManager>().usedFields.IndexOf(id.gameObject) == -1)
+        {
+            FindObjectOfType<FieldManager>().usedFields.Add(id.gameObject);
+        }
+    }
+    
+
+    //Network game over screen
     [Command]
     public void CmdGameOver(int roundedTime)
     {
