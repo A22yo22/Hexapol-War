@@ -93,6 +93,8 @@ public class PlayerInteractions : NetworkBehaviour
             //Get other player
             CmdSetOtherPlayeerVariable();
 
+            GetComponent<PlayerStats>().fieldsCaptured = 0;
+
             firstTileSpawned = true;
         }
 

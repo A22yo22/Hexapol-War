@@ -35,7 +35,6 @@ public class PlayerStats : NetworkBehaviour
             if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player1)
             {
                 fieldManager.remainingFieldsPlayer1.Add(field);
-
             }
             else if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player2)
             {
@@ -64,7 +63,7 @@ public class PlayerStats : NetworkBehaviour
         {
             CmdGameOver((int)time);
         }
-        else if (fieldManager.remainingFieldsPlayer1.Count == 0)
+        else if (fieldManager.remainingFieldsPlayer2.Count == 0)
         {
             CmdGameOver((int)time);
         }

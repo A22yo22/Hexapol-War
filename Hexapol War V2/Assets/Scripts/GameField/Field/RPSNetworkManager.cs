@@ -41,6 +41,14 @@ public class RPSNetworkManager : NetworkBehaviour
         minigameManager.fieldToPlayAbout.SwitchCaptureState(winner);
         minigameManager.attackingPlayer.SwitchCaptureState(winner);
 
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                player.GetComponent<PlayerStats>().RefreshRemainingFields();
+            }
+        }
+
         //Destroy runnting minigame
         Destroy(FindObjectOfType<MinigameManager>().minigameRunning);
     }
