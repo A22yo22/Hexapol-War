@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GameOverManager : MonoBehaviour
@@ -41,5 +42,11 @@ public class GameOverManager : MonoBehaviour
     void SetMinigamesPlayed()
     {
         gamesPlayed.text = "Minigames Played: " + FindObjectOfType<MinigameManager>().minigamesPlayed.ToString();
+    }
+
+    //Back
+    public void Back()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
