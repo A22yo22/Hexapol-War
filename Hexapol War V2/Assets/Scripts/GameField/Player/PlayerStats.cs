@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerStats : NetworkBehaviour
 {
     public float time;
+    public int fieldsCaptured = -1;
+
     public bool gameStarted = false;
 
     public List<GameObject> remainingFields;
@@ -33,17 +35,25 @@ public class PlayerStats : NetworkBehaviour
             if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player1)
             {
                 fieldManager.remainingFieldsPlayer1.Add(field);
+
             }
             else if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player2)
             {
                 fieldManager.remainingFieldsPlayer2.Add(field);
+
             }
         }
 
-        if (gameStarted)
+        if (GetComponent<PlayerInteractions>().thisPlayerTag == FieldData.CaptureState.Player1)
         {
-            RemainingCounterCheck();
+            fieldsCaptured++;
         }
+        else if (GetComponent<PlayerInteractions>().thisPlayerTag == FieldData.CaptureState.Player2)
+        {
+            fieldsCaptured++;
+        }
+
+        RemainingCounterCheck();
     }
 
     public void RemainingCounterCheck()

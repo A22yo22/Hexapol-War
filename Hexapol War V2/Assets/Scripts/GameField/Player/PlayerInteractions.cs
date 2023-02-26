@@ -89,7 +89,6 @@ public class PlayerInteractions : NetworkBehaviour
             int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
             CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
             lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
-            GetComponent<PlayerStats>().RefreshRemainingFields();
 
             //Get other player
             CmdSetOtherPlayeerVariable();
@@ -296,8 +295,6 @@ public class PlayerInteractions : NetworkBehaviour
         {
             FindObjectOfType<FieldManager>().usedFields.Add(identity.gameObject);
         }
-
-        GetComponent<PlayerStats>().RefreshRemainingFields();
 
         //Start timer
         FindAnyObjectByType<PlayerStats>().StartTimer();

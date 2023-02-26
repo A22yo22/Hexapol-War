@@ -22,6 +22,7 @@ public class RPSNetworkManager : NetworkBehaviour
     [Command]
     public void CmdSetWinner(FieldData.CaptureState winner)
     {
+        GetComponent<PlayerStats>().RefreshRemainingFields();
         RpcTellWinner(winner);
     }
 
@@ -39,14 +40,6 @@ public class RPSNetworkManager : NetworkBehaviour
         //Set winner fields
         minigameManager.fieldToPlayAbout.SwitchCaptureState(winner);
         minigameManager.attackingPlayer.SwitchCaptureState(winner);
-
-        foreach (PlayerInteractions playerInteractions in FindObjectsOfType<PlayerInteractions>())
-        {
-            if (playerInteractions.thisPlayerTag != FieldData.CaptureState.Clear)
-            {
-                playerInteractions.GetComponent<PlayerStats>().RefreshRemainingFields();
-            }
-        }
 
         //Destroy runnting minigame
         Destroy(FindObjectOfType<MinigameManager>().minigameRunning);

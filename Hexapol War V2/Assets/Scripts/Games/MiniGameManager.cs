@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MinigameManager : NetworkBehaviour
 {
+    public int minigamesPlayed;
+
     public FieldData fieldToPlayAbout;
     public FieldData attackingPlayer;
 
@@ -16,6 +18,7 @@ public class MinigameManager : NetworkBehaviour
     //Starts a minigame
     public void StartMiniGame()
     {
+        minigamesPlayed++;
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
