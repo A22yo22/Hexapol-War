@@ -13,13 +13,20 @@ public class GameOverManager : MonoBehaviour
     public TMP_Text fieldsCaptured;
     public TMP_Text gamesPlayed;
 
+    bool gameOver = false;
+
     public void GameOver(int time)
     {
-        gameOverSceen.SetActive(true);
+        if(!gameOver)
+        {
+            gameOverSceen.SetActive(true);
 
-        SetTime(time);
-        SetFieldsCaptured();
-        SetMinigamesPlayed();
+            SetTime(time);
+            SetFieldsCaptured();
+            SetMinigamesPlayed();
+        }
+
+        gameOver = true;
     }
 
 
