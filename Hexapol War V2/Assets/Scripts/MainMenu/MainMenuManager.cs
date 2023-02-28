@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] GameObject statsTab;
     [SerializeField] GameObject settingsTab;
 
-    List<GameObject> tabs;
+    List<GameObject> tabs = new List<GameObject>();
 
     public enum menuState
     {
@@ -22,7 +23,7 @@ public class MainMenuManager : MonoBehaviour
         Quit
     }
 
-    private void Awake()
+    private void Start()
     {
         //Add tabs to tabs list
         tabs.Add(mainTab);
