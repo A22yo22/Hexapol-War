@@ -34,6 +34,7 @@ public class GameOverManager : MonoBehaviour
         {
             if (player.thisPlayerTag != FieldData.CaptureState.Clear)
             {
+                PlayerPrefs.SetInt("FieldsCaptured", PlayerPrefs.GetInt("FieldsCaptured") + player.GetComponent<PlayerStats>().fieldsCaptured);
                 fieldsCaptured.text = "Fields Captured: " + player.GetComponent<PlayerStats>().fieldsCaptured.ToString();
             }
         }
@@ -41,6 +42,7 @@ public class GameOverManager : MonoBehaviour
 
     void SetMinigamesPlayed()
     {
+        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed") + FindObjectOfType<MinigameManager>().minigamesPlayed);
         gamesPlayed.text = "Minigames Played: " + FindObjectOfType<MinigameManager>().minigamesPlayed.ToString();
     }
 
