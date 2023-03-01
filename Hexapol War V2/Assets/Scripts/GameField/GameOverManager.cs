@@ -33,6 +33,7 @@ public class GameOverManager : MonoBehaviour
     void SetTime(int time)
     {
         timeText.text = "Time Played: " + time.ToString();
+        PlayerPrefs.SetInt("TimeSpentInGames", PlayerPrefs.GetInt("TimeSpentInGames") + time);
     }
 
     void SetFieldsCaptured()
