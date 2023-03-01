@@ -104,6 +104,7 @@ public class RPSGameManager : NetworkBehaviour
                 if (playerWon == rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag)
                 {
                     PlayerPrefs.SetInt("GamesWon", PlayerPrefs.GetInt("GamesWon") + 1);
+                    PlayerPrefs.SetInt("EnemyFieldsCaptured", PlayerPrefs.GetInt("EnemyFieldsCaptured") + 1);
                 }
                 else
                 {
