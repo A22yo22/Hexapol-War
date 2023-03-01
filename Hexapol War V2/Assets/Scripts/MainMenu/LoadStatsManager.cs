@@ -12,21 +12,6 @@ public class LoadStatsManager : MonoBehaviour
     public TMP_Text gamesWon;
     public TMP_Text gamesLost;
 
-    void Start()
-    {
-        LoadStats();
-    }
-
-    void SetStatsSave()
-    {
-        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed"));
-        PlayerPrefs.SetInt("TimeSpentInGames", PlayerPrefs.GetInt("TimeSpentInGames"));
-        PlayerPrefs.SetInt("FieldsCaptured", PlayerPrefs.GetInt("FieldsCaptured"));
-        PlayerPrefs.SetInt("EnemyFieldsCaptured", PlayerPrefs.GetInt("EnemyFieldsCaptured"));
-        PlayerPrefs.SetInt("GamesWon", PlayerPrefs.GetInt("GamesWon"));
-        PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost"));
-    }
-
     public void LoadStats()
     {
         gamesPlayed.text = PlayerPrefs.GetInt("GamesPlayed").ToString();
@@ -35,5 +20,18 @@ public class LoadStatsManager : MonoBehaviour
         enemyFieldsCaptured.text = PlayerPrefs.GetInt("EnemyFieldsCaptured").ToString();
         gamesWon.text = PlayerPrefs.GetInt("GamesWon").ToString();
         gamesLost.text = PlayerPrefs.GetInt("GamesLost").ToString();
+    }
+
+    //Resets stats when you want to
+    public void ResetStats()
+    {
+        PlayerPrefs.SetInt("GamesPlayed", 0);
+        PlayerPrefs.SetInt("TimeSpentInGames", 0);
+        PlayerPrefs.SetInt("FieldsCaptured", 0);
+        PlayerPrefs.SetInt("EnemyFieldsCaptured", 0);
+        PlayerPrefs.SetInt("GamesWon", 0);
+        PlayerPrefs.SetInt("GamesLost", 0);
+
+        LoadStats();
     }
 }

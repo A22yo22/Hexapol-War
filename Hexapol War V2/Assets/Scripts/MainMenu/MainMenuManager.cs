@@ -51,6 +51,7 @@ public class MainMenuManager : MonoBehaviour
 
             case menuState.StatsTab:
                 statsTab.SetActive(true);
+                FindObjectOfType<LoadStatsManager>().LoadStats();
                 break;
 
             case menuState.SettingsTab:
