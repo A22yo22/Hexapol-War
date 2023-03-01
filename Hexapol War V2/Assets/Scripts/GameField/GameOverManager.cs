@@ -85,6 +85,11 @@ public class GameOverManager : NetworkBehaviour
     //Back
     public void Back()
     {
+        if(isServer) FindObjectOfType<NetworkManager>().StopHost();
+        else if(isClient) FindObjectOfType<NetworkManager>().StopClient();
+
+        Destroy(FindObjectOfType<NetworkManager>());
+
         SceneManager.LoadScene("MainMenu");
     }
 }
