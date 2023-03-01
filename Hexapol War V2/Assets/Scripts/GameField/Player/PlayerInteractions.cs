@@ -87,6 +87,11 @@ public class PlayerInteractions : NetworkBehaviour
 
             //Set player start pos
             int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+            while (lobbyManager.fieldssSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
+            {
+                selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+            }
+
             CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
             lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
 
