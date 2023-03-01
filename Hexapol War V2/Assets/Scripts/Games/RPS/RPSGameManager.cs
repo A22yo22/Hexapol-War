@@ -101,6 +101,15 @@ public class RPSGameManager : NetworkBehaviour
         {
             if (rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag != FieldData.CaptureState.Clear)
             {
+                if (playerWon == rpsManager.gameObject.GetComponent<PlayerInteractions>().thisPlayerTag)
+                {
+                    PlayerPrefs.SetInt("GamesWon", PlayerPrefs.GetInt("GamesWon") + 1);
+                }
+                else
+                {
+                    PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost") + 1);
+                }
+
                 rpsManager.CmdSetWinner(playerWon);
             }
         }

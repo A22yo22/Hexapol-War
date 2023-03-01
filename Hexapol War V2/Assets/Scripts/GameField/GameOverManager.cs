@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class GameOverManager : MonoBehaviour
+public class GameOverManager : NetworkBehaviour
 {
     public GameObject gameOverSceen;
 
+    public TMP_Text lostOrWon;
     public TMP_Text timeText;
     public TMP_Text fieldsCaptured;
     public TMP_Text gamesPlayed;
@@ -21,6 +22,7 @@ public class GameOverManager : MonoBehaviour
         {
             gameOverSceen.SetActive(true);
 
+            SetLostOrWon();
             SetTime(time);
             SetFieldsCaptured();
             SetMinigamesPlayed();
@@ -29,6 +31,32 @@ public class GameOverManager : MonoBehaviour
         gameOver = true;
     }
 
+
+    void SetLostOrWon()
+    {
+        //is player one and won
+        if (isServer && FindObjectOfType<FieldManager>().remainingFieldsPlayer1.Count == 0)
+        {
+            lostOrWon.text = "Lost";
+            PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost") + 1);
+        }
+        else
+        {
+            lostOrWon.text = "Won";
+        }
+
+        //is player two and won
+        if (isClientOnly && FindObjectOfType<FieldManager>().remainingFieldsPlayer2.Count == 0)
+        {
+            lostOrWon.text = "Lost";
+            PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost") + 1);
+        }
+        else
+        {
+            lostOrWon.text = "Won";
+            PlayerPrefs.SetInt("GamesWon", PlayerPrefs.GetInt("GamesWon") + 1);
+        }
+    }
 
     void SetTime(int time)
     {
