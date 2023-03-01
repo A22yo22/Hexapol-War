@@ -35,10 +35,15 @@ public class PlayerInteractions : NetworkBehaviour
         if (isServer)
         {
             thisPlayerTag = FieldData.CaptureState.Player1;
+
+            FindObjectOfType<FieldSpawner>().indicator.SetActive(true);
+            firstTimePlayerCanMove = false;
         }
         else if (isClientOnly)
         {
             thisPlayerTag = FieldData.CaptureState.Player2;
+            FindObjectOfType<FieldSpawner>().indicator.SetActive(false);
+            firstTimePlayerCanMove = true;
         }
 
         //Add event to ready up button
@@ -51,6 +56,7 @@ public class PlayerInteractions : NetworkBehaviour
     }
 
     bool firstTileSpawned;
+    bool firstTimePlayerCanMove = true;
     private void Update()
     {
         //Check if is local player
@@ -105,6 +111,13 @@ public class PlayerInteractions : NetworkBehaviour
 
         if (canMove)
         {
+            Debug.Log(firstTimePlayerCanMove);
+            if (!firstTimePlayerCanMove)
+            {
+                FindObjectOfType<FieldSpawner>().indicator.SetActive(true);
+                firstTimePlayerCanMove = false;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 //Makes gets the field you've clicked on
@@ -206,6 +219,9 @@ public class PlayerInteractions : NetworkBehaviour
     //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
+        FindObjectOfType<FieldSpawner>().indicator.SetActive(false);
+        firstTimePlayerCanMove = true;
+        
         RestSelectedFields();
 
         //Switch player

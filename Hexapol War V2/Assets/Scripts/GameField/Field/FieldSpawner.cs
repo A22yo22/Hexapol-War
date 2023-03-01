@@ -16,6 +16,7 @@ public class FieldSpawner : NetworkBehaviour
     [Header("References")]
     public GameObject hexagonPrefab;
     public Transform parent;
+    public GameObject indicator;
 
     public void SpawnGrid()
     {
