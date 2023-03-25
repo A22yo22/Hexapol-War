@@ -1948,7 +1948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &853159465
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2789,17 +2789,17 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
   shallowColor: {r: 0, g: 0.7725491, b: 0.62352943, a: 0.5019608}
-  deepColor: {r: 0.01176471, g: 0.28589153, b: 0.50980073, a: 1}
+  deepColor: {r: 0.01176471, g: 0.28588906, b: 0.50980073, a: 1}
   colorDepth: 0.84
-  horizonColor: {r: 0, g: 0.22706804, b: 0.8, a: 1}
+  horizonColor: {r: 0, g: 0.22706556, b: 0.8, a: 1}
   horizonDistance: 20
   shoreFade: 1
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30157784, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.30157536, a: 0}
   shoreStrength: 0
   shoreBlend: 1
   shoreDepth: 0.5
   waveColor: {r: 0, g: 0, b: 0, a: 0}
-  underwaterColor: {r: 0.2035586, g: 0.30942094, b: 0.517647, a: 0}
+  underwaterColor: {r: 0.20355624, g: 0.30941847, b: 0.517647, a: 0}
   underwaterColorStrength: 0
   underwaterRefractionStrength: 0.099
   surfaceFoamTexture: {fileID: 2800000, guid: d3b0d77dfe711a04c8ff18ecc260aa66, type: 3}

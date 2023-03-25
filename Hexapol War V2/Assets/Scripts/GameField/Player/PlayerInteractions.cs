@@ -29,7 +29,13 @@ public class PlayerInteractions : NetworkBehaviour
     void Start()
     {
         //Check if is local player
-        if (!isLocalPlayer) return;
+        if (!isLocalPlayer)
+        {
+            //Disabel can move text
+            Destroy(transform.GetChild(0).gameObject);
+
+            return;
+        }
 
         //Asign playerTag
         if (isServer)
@@ -61,6 +67,7 @@ public class PlayerInteractions : NetworkBehaviour
     {
         //Check if is local player
         if (!isLocalPlayer) return;
+
 
         //Sets the spawn field of the current player and get spawnned hexagons
         if (FindObjectOfType<LobbyManager>().playerReady == 2 && !firstTileSpawned)
@@ -111,7 +118,10 @@ public class PlayerInteractions : NetworkBehaviour
 
         if (canMove)
         {
-            Debug.Log(firstTimePlayerCanMove);
+            Debug.Log("true");
+            //Disabel can move text
+            transform.GetChild(0).gameObject.SetActive(true);
+
             if (!firstTimePlayerCanMove)
             {
                 FindObjectOfType<FieldSpawner>().indicator.SetActive(true);
@@ -154,6 +164,12 @@ public class PlayerInteractions : NetworkBehaviour
             {
                 RestSelectedFields();
             }
+        }
+        else
+        {
+            Debug.Log("false");
+            //Disabel can move text
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 
