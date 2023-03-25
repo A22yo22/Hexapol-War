@@ -23,7 +23,17 @@ public class MinigameManager : NetworkBehaviour
         {
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
         }
-        FindObjectOfType<RPSUiManager>().SetUp();
+
+        Debug.Log("Start");
+
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            player.enabled = true;
+
+            player.transform.Find("Player").gameObject.SetActive(true);
+        }
+
+        //FindObjectOfType<RPSUiManager>().SetUp();
     }
 
     public void OpenMiniGameame()

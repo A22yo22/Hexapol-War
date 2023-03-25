@@ -118,7 +118,6 @@ public class PlayerInteractions : NetworkBehaviour
 
         if (canMove)
         {
-            Debug.Log("true");
             //Disabel can move text
             transform.GetChild(0).gameObject.SetActive(true);
 
@@ -167,7 +166,6 @@ public class PlayerInteractions : NetworkBehaviour
         }
         else
         {
-            Debug.Log("false");
             //Disabel can move text
             transform.GetChild(0).gameObject.SetActive(false);
         }
@@ -240,6 +238,8 @@ public class PlayerInteractions : NetworkBehaviour
         
         RestSelectedFields();
 
+        FindObjectOfType<SaveMap>().SaveGameMap(FindObjectOfType<FieldSpawner>());
+
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
 
@@ -267,7 +267,7 @@ public class PlayerInteractions : NetworkBehaviour
     {
         RestSelectedFields();
 
-        CmdStartMinigame(fieldToPlayAbout, lastSelectedField);
+        CmdStartMinigame(fieldToPlayAbout,lastSelectedField);
     }
 
     //Network section
