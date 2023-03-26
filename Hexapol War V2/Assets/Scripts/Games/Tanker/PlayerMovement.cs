@@ -26,8 +26,7 @@ public class PlayerMovement : NetworkBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(horizontal, 0, vertical);
-        rb.velocity = direction * movmentSpeed;
+        rb.velocity = new Vector3(horizontal * movmentSpeed, rb.velocity.y, vertical * movmentSpeed);
 
     }
 }
