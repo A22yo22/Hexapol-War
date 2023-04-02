@@ -15,6 +15,7 @@ public class MinigameManager : NetworkBehaviour
 
     public GameObject minigameRunning;
 
+
     //Starts a minigame
     public void StartMiniGame()
     {

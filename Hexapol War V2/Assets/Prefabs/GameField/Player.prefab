@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 2324289803460971108}
   - component: {fileID: 4275455287147223079}
   - component: {fileID: 4058964644751506346}
+  - component: {fileID: 1083027056461358377}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -531,6 +532,22 @@ MonoBehaviour:
   gun: {fileID: 6522256336938978438}
   gunSpawnPos: {fileID: 909612470505401346}
   bullet: {fileID: 3379942472637459947, guid: 5d35ce6e73634a342b325b75ad9f8381, type: 3}
+--- !u!114 &1083027056461358377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4407027616088828492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 462d9a0246dc9f947bf00ada805c6ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0.1
+  health: 3
 --- !u!1 &4654831778335794723
 GameObject:
   m_ObjectHideFlags: 0

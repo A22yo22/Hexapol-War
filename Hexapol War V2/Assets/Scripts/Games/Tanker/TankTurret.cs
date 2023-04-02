@@ -1,7 +1,9 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TankTurret : NetworkBehaviour
 {
@@ -19,6 +21,17 @@ public class TankTurret : NetworkBehaviour
     private void Start()
     {
         aimAt = Instantiate(new GameObject()).transform;
+
+        if (!isLocalPlayer)
+        {
+            gun.parent.gameObject.layer = 8;
+            gun.parent.gameObject.tag = "Enemy";
+        }
+        else
+        {
+            gun.parent.gameObject.layer = 9;
+            gun.parent.gameObject.tag = "Player";
+        }
     }
 
     private void Update()
@@ -33,7 +46,6 @@ public class TankTurret : NetworkBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
         {
-            Debug.Log(hit.transform.name);
             aimAt.position = hit.point;
 
             /*
@@ -68,9 +80,38 @@ public class TankTurret : NetworkBehaviour
     {
         GameObject x = Instantiate(bullet, gunSpawnPos.position, Quaternion.identity);
         x.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
+        x.GetComponent<BulletCollider>().tankTurret = this;
         Destroy(x, 3);
-
-        //NetworkServer.Spawn(x);
     }
 
+
+    //deal damage to enemy
+    public void TakeDamage(int damage, NetworkIdentity id)
+    {
+        CmdTakeDamage(damage, id);
+    }
+
+    [Command]
+    public void CmdTakeDamage(int damage, NetworkIdentity id)
+    {
+        RpcTakeDamage(damage, id);
+    }
+
+    [ClientRpc]
+    public void RpcTakeDamage(int damage, NetworkIdentity id)
+    {
+        id.GetComponent<Health>().health -= damage;
+        Debug.Log(id.gameObject.tag);
+
+        if (id.GetComponent<Health>().health <= 0)
+        {
+            if (!transform.CompareTag("Enemy"))
+            {
+                if (isClient) NetworkManager.singleton.StopClient();
+                else if (isServer) NetworkManager.singleton.StopHost();
+
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+    }
 }
