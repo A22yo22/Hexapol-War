@@ -81,7 +81,7 @@ public class TankTurret : NetworkBehaviour
         GameObject x = Instantiate(bullet, gunSpawnPos.position, Quaternion.identity);
         x.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
         x.GetComponent<BulletCollider>().tankTurret = this;
-        Destroy(x, 3);
+        Destroy(x, 5);
     }
 
 
@@ -101,7 +101,6 @@ public class TankTurret : NetworkBehaviour
     public void RpcTakeDamage(int damage, NetworkIdentity id)
     {
         id.GetComponent<Health>().health -= damage;
-        Debug.Log(id.gameObject.tag);
 
         if (id.GetComponent<Health>().health <= 0)
         {
