@@ -106,10 +106,7 @@ public class TankTurret : NetworkBehaviour
         {
             if (!transform.CompareTag("Enemy"))
             {
-                if (isClient) NetworkManager.singleton.StopClient();
-                else if (isServer) NetworkManager.singleton.StopHost();
-
-                SceneManager.LoadScene("MainMenu");
+                FindObjectOfType<MinigameManager>().GameOver(id);
             }
         }
     }

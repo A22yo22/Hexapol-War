@@ -49,4 +49,52 @@ public class MinigameManager : NetworkBehaviour
         minigameRunning = Instantiate(miniGame);
         NetworkServer.Spawn(minigameRunning);
     }
+
+    public void GameOver(NetworkIdentity loser)
+    {
+        foreach (GameObject gameFieldObject in gameFieldFolder)
+        {
+            gameFieldObject.transform.position = new Vector3(0, 0, 0);
+        }
+
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            player.enabled = true;
+
+            player.transform.Find("Player").gameObject.SetActive(false);
+
+            /*
+            if (player.GetComponent<PlayerInteractions>().canMove == true)
+            {
+                player.transform.Find("CanMove").gameObject.SetActive(true);
+            }
+            */
+
+            player.GetComponent<PlayerMovement>().enabled = false;
+            player.GetComponent<TankTurret>().enabled = false;
+        }
+
+        Destroy(minigameRunning);
+
+
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.thisPlayerTag != FieldData.CaptureState.Clear)
+            {
+                player.GetComponent<PlayerStats>().RefreshRemainingFields();
+            }
+        }
+
+
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.isOwned)
+            {
+                FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(loser.GetComponent<PlayerInteractions>().thisPlayerTag);
+
+                player.CmdSetFieldState(attackingPlayer.GetComponent<NetworkIdentity>(), winner);
+                player.CmdSetFieldState(fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
+            }
+        }
+    }
 }
