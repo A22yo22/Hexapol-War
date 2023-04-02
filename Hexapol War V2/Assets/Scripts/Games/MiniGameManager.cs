@@ -35,6 +35,9 @@ public class MinigameManager : NetworkBehaviour
             {
                 player.transform.Find("CanMove").gameObject.SetActive(false);
             }
+
+            player.GetComponent<PlayerMovement>().enabled = true;
+            player.GetComponent<TankTurret>().enabled = true;
         }
 
         //FindObjectOfType<RPSUiManager>().SetUp();
