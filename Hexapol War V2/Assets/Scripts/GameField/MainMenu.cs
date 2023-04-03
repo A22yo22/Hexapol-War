@@ -6,7 +6,7 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public NetworkManager manager;
+    public SteamLobby lobbyManager;
 
     public TMP_InputField ip;
 
@@ -15,20 +15,20 @@ public class MainMenu : MonoBehaviour
 
     public void Host()
     {
-        manager.StartHost();
+        lobbyManager.HostLobby();
 
         StartGame();
     }
 
     public void Join()
     {
-        manager.networkAddress = ip.text;
-        manager.StartClient();
+        //manager.networkAddress = ip.text;
+        //manager.StartClient();
 
         StartGame();
     }
 
-    void StartGame()
+    public void StartGame()
     {
         mainMenu.SetActive(false);
         lobby.SetActive(true);

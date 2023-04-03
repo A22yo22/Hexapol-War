@@ -58,15 +58,14 @@ public class SteamLobby : MonoBehaviour
     private void OnLobbyEnterd(LobbyEnter_t callback)
     {
         //Everyone
-        hostButton.SetActive(false);
         currentLobbyID = callback.m_ulSteamIDLobby;
-        lobbyNameText.gameObject.SetActive(true);
-        lobbyNameText.text = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name");
 
         //Clients
         if(NetworkServer.active) { return; }
 
         manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), hostAddressKey);
+
+        FindObjectOfType<MainMenu>().StartGame();
 
         manager.StartClient();
     }

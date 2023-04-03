@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FizzyTest.unity
-    guid: 4ceecd62d8651fe4abe18b7742d82bb9
-  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: e3404383540bb1a4da70312f32bf29a8
   - enabled: 1
     path: Assets/Scenes/GameField.unity
     guid: 2db10cf16ed05c74cb3d3722d0d127a9
+  - enabled: 0
+    path: Assets/Scenes/FizzyTest.unity
+    guid: 4ceecd62d8651fe4abe18b7742d82bb9
   m_configObjects: {}
