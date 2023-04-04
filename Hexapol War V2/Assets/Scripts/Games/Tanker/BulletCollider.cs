@@ -15,12 +15,12 @@ public class BulletCollider : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             tankTurret.TakeDamage(damage, other.transform.parent.GetComponent<NetworkIdentity>());
-            Destroy(gameObject);
         }
         else if (other.CompareTag("Player"))
         {
             tankTurret.TakeDamage(damage, other.transform.parent.GetComponent<NetworkIdentity>());
-            Destroy(gameObject);
         }
+
+        Destroy(gameObject);
     }
 }
