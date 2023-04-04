@@ -12,8 +12,6 @@ public class BulletCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-
         if (other.CompareTag("Enemy"))
         {
             tankTurret.TakeDamage(damage, other.transform.parent.GetComponent<NetworkIdentity>());

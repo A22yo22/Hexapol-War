@@ -327,8 +327,9 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)
     {
-        identity.GetComponent<FieldData>().SwitchCaptureState(state);
+        Debug.Log(state + " Fild state to set");
 
+        identity.GetComponent<FieldData>().SwitchCaptureState(state);
 
         if (FindObjectOfType<FieldManager>().usedFields.IndexOf(identity.gameObject) == -1)
         {

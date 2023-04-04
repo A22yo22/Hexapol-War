@@ -39,6 +39,8 @@ public class MinigameManager : NetworkBehaviour
 
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<TankTurret>().enabled = true;
+            player.GetComponent<Health>().enabled = true;
+            player.GetComponent<Health>().ResetMinigameHealth();
         }
 
         //FindObjectOfType<RPSUiManager>().SetUp();
@@ -52,6 +54,8 @@ public class MinigameManager : NetworkBehaviour
 
     public void GameOver(NetworkIdentity loser)
     {
+
+        //Enable game map
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
             gameFieldObject.transform.position = new Vector3(0, 0, 0);
@@ -63,20 +67,13 @@ public class MinigameManager : NetworkBehaviour
 
             player.transform.Find("Player").gameObject.SetActive(false);
 
-            /*
-            if (player.GetComponent<PlayerInteractions>().canMove == true)
-            {
-                player.transform.Find("CanMove").gameObject.SetActive(true);
-            }
-            */
-
             player.GetComponent<PlayerMovement>().enabled = false;
             player.GetComponent<TankTurret>().enabled = false;
         }
 
         Destroy(minigameRunning);
 
-
+        //Refreshing game over manager              BROKEN!!!
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
             if (player.thisPlayerTag != FieldData.CaptureState.Clear)
@@ -85,16 +82,6 @@ public class MinigameManager : NetworkBehaviour
             }
         }
 
-
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
-        {
-            if (player.isOwned)
-            {
-                FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(loser.GetComponent<PlayerInteractions>().thisPlayerTag);
-
-                player.CmdSetFieldState(attackingPlayer.GetComponent<NetworkIdentity>(), winner);
-                player.CmdSetFieldState(fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
-            }
-        }
+        //
     }
 }
