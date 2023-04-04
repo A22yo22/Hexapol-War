@@ -18,6 +18,9 @@ public class TankTurret : NetworkBehaviour
     public Transform gunSpawnPos;
     public GameObject bullet;
 
+    public float shootDelay = 0.1f;
+    public bool canShoot = true;
+
     private void Start()
     {
         aimAt = Instantiate(new GameObject()).transform;
@@ -45,25 +48,22 @@ public class TankTurret : NetworkBehaviour
         {
             aimAt.position = hit.point;
 
-            /*
-            if (hit.transform.CompareTag("Player"))
-            {
-                aimAt.position = hit.transform.position;
-            }
-            if (hit.transform.CompareTag("Enemy"))
-            {
-                aimAt.position = hit.transform.position;
-            }
-            */
-
             gun.LookAt(aimAt);
             gun.eulerAngles = new Vector3(0, gun.eulerAngles.y, gun.eulerAngles.z);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canShoot)
         {
             CmdSpawnBullet(gunSpawnPos.forward);
+            StartCoroutine(StartShootDelayCounter());
         }
+    }
+
+    IEnumerator StartShootDelayCounter()
+    {
+        canShoot = false;
+        yield return new WaitForSeconds(shootDelay);
+        canShoot = true;
     }
 
     [Command]
