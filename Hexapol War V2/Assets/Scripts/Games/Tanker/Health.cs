@@ -1,17 +1,21 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Health : NetworkBehaviour
 {
     public int health = 3;
     public int startHealth = 3;
+    public TMP_Text healthbar;
 
     bool dead = false;
 
     private void Update()
     {
+        healthbar.text = health.ToString();
+
         if (!isLocalPlayer) { return; }
 
         if (health <= 0 && !dead)
