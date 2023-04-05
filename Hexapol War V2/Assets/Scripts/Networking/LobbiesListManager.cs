@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Steamworks;
 
 public class LobbiesListManager : MonoBehaviour
@@ -8,7 +9,7 @@ public class LobbiesListManager : MonoBehaviour
     public static LobbiesListManager instance;
 
     //Lobbies List Variables
-    public GameObject lobbyiesMenu;
+    public GameObject lobbiesMenu;
     public GameObject lobbyDataItemPrefab;
     public GameObject lobbyListContent;
 
@@ -25,7 +26,7 @@ public class LobbiesListManager : MonoBehaviour
     {
         search.SetActive(false);
 
-        lobbyiesMenu.SetActive(true);
+        lobbiesMenu.SetActive(true);
 
         SteamLobby.instance.GetLobbiesList();
     }
@@ -57,5 +58,16 @@ public class LobbiesListManager : MonoBehaviour
             Destroy(lobbyItem);
         }
         listOfLobbies.Clear();
+    }
+
+    public void Back()
+    {
+        lobbiesMenu.SetActive(false);
+        search.SetActive(true);
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
