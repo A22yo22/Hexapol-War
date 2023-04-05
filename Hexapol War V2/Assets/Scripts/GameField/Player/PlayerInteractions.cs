@@ -68,9 +68,6 @@ public class PlayerInteractions : NetworkBehaviour
         //Check if is local player
         if (!isLocalPlayer) return;
 
-        //Camera follow
-        Camera.main.transform.LookAt(transform.Find("Player"));
-
         //Sets the spawn field of the current player and get spawnned hexagons
         if (FindObjectOfType<LobbyManager>().playerReady == 2 && !firstTileSpawned)
         {

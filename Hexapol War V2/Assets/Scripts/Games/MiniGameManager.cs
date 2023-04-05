@@ -43,7 +43,9 @@ public class MinigameManager : NetworkBehaviour
             player.GetComponent<Health>().ResetMinigameHealth();
         }
 
-        //FindObjectOfType<RPSUiManager>().SetUp();
+
+        Camera.main.transform.position = new Vector3(0, 22.3f, 0);
+        Camera.main.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
     public void OpenMiniGameame()
@@ -72,10 +74,6 @@ public class MinigameManager : NetworkBehaviour
 
         Destroy(minigameRunning);
 
-        //Set camera
-        Camera.main.transform.position = new Vector3(0, 9.3f, -8.59f);
-        Camera.main.transform.rotation = Quaternion.Euler(51.74f, 0, 0);
-
         //Refreshing game over manager              BROKEN!!!
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
@@ -85,6 +83,8 @@ public class MinigameManager : NetworkBehaviour
             }
         }
 
-        //
+        //Set camera
+        Camera.main.transform.position = new Vector3(0, 9.3f, -8.59f);
+        Camera.main.transform.rotation = Quaternion.Euler(51.74f, 0f, 0f);
     }
 }
