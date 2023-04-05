@@ -39,7 +39,10 @@ public class TankTurret : NetworkBehaviour
 
     private void Update()
     {
+        //Check if is local player
         if (!isLocalPlayer) { return; }
+
+        Camera.main.transform.LookAt(transform.Find("Player"));
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

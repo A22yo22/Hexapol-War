@@ -38,7 +38,7 @@ public class MainMenu : MonoBehaviour
     }
     public void JoinOffline()
     {
-        manager.networkAddress = ip.text;
+        manager.networkAddress = "localhost";
         manager.StartClient();
 
         StartGame();

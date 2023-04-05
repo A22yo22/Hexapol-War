@@ -54,7 +54,6 @@ public class MinigameManager : NetworkBehaviour
 
     public void GameOver(NetworkIdentity loser)
     {
-
         //Enable game map
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
@@ -72,6 +71,10 @@ public class MinigameManager : NetworkBehaviour
         }
 
         Destroy(minigameRunning);
+
+        //Set camera
+        Camera.main.transform.position = new Vector3(0, 9.3f, -8.59f);
+        Camera.main.transform.rotation = Quaternion.Euler(51.74f, 0, 0);
 
         //Refreshing game over manager              BROKEN!!!
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
