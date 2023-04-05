@@ -6,6 +6,8 @@ using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
+    public static MainMenu instance;
+
     public SteamLobby lobbyManager;
     public NetworkManager manager;
 
@@ -13,6 +15,11 @@ public class MainMenu : MonoBehaviour
 
     public GameObject mainMenu;
     public GameObject lobby;
+
+    private void Awake()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     public void Host()
     {

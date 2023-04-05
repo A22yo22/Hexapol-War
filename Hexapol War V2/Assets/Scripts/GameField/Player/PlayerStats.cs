@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class PlayerStats : NetworkBehaviour
 {
+    public static PlayerStats instance;
+
     public float time;
     public int fieldsCaptured = -1;
 
     public bool gameStarted = false;
 
     public List<GameObject> remainingFields;
+
+    private void Awake()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     private void Update()
     {

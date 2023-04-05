@@ -106,7 +106,7 @@ public class TankTurret : NetworkBehaviour
         {
             if (!transform.CompareTag("Enemy"))
             {
-                FindObjectOfType<MinigameManager>().GameOver(id);
+                MinigameManager.instance.GameOver(id);
             }
         }
     }

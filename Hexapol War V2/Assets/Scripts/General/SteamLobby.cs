@@ -77,7 +77,7 @@ public class SteamLobby : MonoBehaviour
 
         manager.networkAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), hostAddressKey);
 
-        FindObjectOfType<MainMenu>().StartGame();
+        MainMenu.instance.StartGame();
 
         manager.StartClient();
     }

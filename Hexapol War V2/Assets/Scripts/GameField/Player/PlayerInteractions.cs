@@ -340,7 +340,7 @@ public class PlayerInteractions : NetworkBehaviour
         }
 
         //Start timer
-        FindAnyObjectByType<PlayerStats>().StartTimer();
+        PlayerStats.instance.StartTimer();
 
         //Game started
         GetComponent<PlayerStats>().gameStarted = true;
