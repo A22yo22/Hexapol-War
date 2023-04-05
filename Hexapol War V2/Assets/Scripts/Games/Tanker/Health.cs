@@ -29,8 +29,8 @@ public class Health : NetworkBehaviour
                     FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(GetComponent<PlayerInteractions>().thisPlayerTag);
 
 
-                    player.CmdSetFieldState(FindObjectOfType<MinigameManager>().attackingPlayer.GetComponent<NetworkIdentity>(), winner);
-                    player.CmdSetFieldState(FindObjectOfType<MinigameManager>().fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
+                    player.CmdSetFieldState(MinigameManager.instance.attackingPlayer.GetComponent<NetworkIdentity>(), winner);
+                    player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
                 }
             }
             dead = true;

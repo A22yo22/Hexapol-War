@@ -19,6 +19,8 @@ public class PlayerInteractions : NetworkBehaviour
 
     public bool canMove = true;
 
+    public Material enemyColor;
+
     //Lists
     public List<GameObject> selectedFields;
 
@@ -50,6 +52,7 @@ public class PlayerInteractions : NetworkBehaviour
             thisPlayerTag = FieldData.CaptureState.Player2;
             FindObjectOfType<FieldSpawner>().indicator.SetActive(false);
             firstTimePlayerCanMove = true;
+            CmdSetEnemyColor(GetComponent<NetworkIdentity>());
         }
 
         //Add event to ready up button
@@ -279,16 +282,16 @@ public class PlayerInteractions : NetworkBehaviour
     [Command]
     public void CmdStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
     {
-        FindObjectOfType<MinigameManager>().OpenMiniGameame();
+        MinigameManager.instance.OpenMiniGameame();
         RpcStartMinigame(fieldToPlayAbout, attackingPlayer);
     }
     [ClientRpc]
     public void RpcStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
     {
-        FindObjectOfType<MinigameManager>().fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
-        FindObjectOfType<MinigameManager>().attackingPlayer = attackingPlayer.GetComponent<FieldData>();
-        
-        FindObjectOfType<MinigameManager>().StartMiniGame();
+        MinigameManager.instance.fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
+        MinigameManager.instance.attackingPlayer = attackingPlayer.GetComponent<FieldData>();
+
+        MinigameManager.instance.StartMiniGame();
     }
 
     //Field stuff
@@ -382,6 +385,22 @@ public class PlayerInteractions : NetworkBehaviour
     {
         FindObjectOfType<FieldManager>().players2.canMove = true;
         FindObjectOfType<FieldManager>().players1.canMove = false;
+    }
+
+    [Command]
+    public void CmdSetEnemyColor(NetworkIdentity id)
+    {
+        RpcSetEnemyColor(id);
+    }
+    [ClientRpc]
+    public void RpcSetEnemyColor(NetworkIdentity id)
+    {
+        //Debug.Log("Called");
+        //Material enemyColor = new Material(Shader.Find("Standard"));
+        //enemyColor.color = Color.red;
+
+        Debug.Log(id.transform.Find("Player").GetComponent<Renderer>().materials[0] + " = " + enemyColor);
+        id.transform.Find("Player").GetComponent<Renderer>().materials[0] = enemyColor;
     }
 }
 

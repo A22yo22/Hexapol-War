@@ -455,6 +455,7 @@ MonoBehaviour:
     m_Bits: 64
   otherPlayer: {fileID: 0}
   canMove: 1
+  enemyColor: {fileID: 2100000, guid: ab35b60bb04891542bb432ee9b031c89, type: 2}
   selectedFields: []
 --- !u!114 &9156983130289781766
 MonoBehaviour:
@@ -604,6 +605,8 @@ MonoBehaviour:
   gun: {fileID: 6522256336938978438}
   gunSpawnPos: {fileID: 909612470505401346}
   bullet: {fileID: 3379942472637459947, guid: 5d35ce6e73634a342b325b75ad9f8381, type: 3}
+  shootDelay: 0.1
+  canShoot: 1
 --- !u!114 &1083027056461358377
 MonoBehaviour:
   m_ObjectHideFlags: 0

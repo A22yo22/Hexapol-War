@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MinigameManager : NetworkBehaviour
 {
+    public static MinigameManager instance;
+
     public int minigamesPlayed;
 
     public FieldData fieldToPlayAbout;
@@ -15,6 +17,10 @@ public class MinigameManager : NetworkBehaviour
 
     public GameObject minigameRunning;
 
+    private void Start()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     //Starts a minigame
     public void StartMiniGame()

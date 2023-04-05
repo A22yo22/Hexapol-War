@@ -29,17 +29,17 @@ public class RPSNetworkManager : NetworkBehaviour
     [ClientRpc]
     public void RpcTellWinner(FieldData.CaptureState winner)
     {
-        MinigameManager minigameManager = FindObjectOfType<MinigameManager>();
+        //MinigameManager minigameManager = FindObjectOfType<MinigameManager>();
 
         //Activate game field
-        foreach (GameObject gameFieldObject in minigameManager.gameFieldFolder)
+        foreach (GameObject gameFieldObject in MinigameManager.instance.gameFieldFolder)
         {
             gameFieldObject.transform.position = Vector3.zero;
         }
 
         //Set winner fields
-        minigameManager.fieldToPlayAbout.SwitchCaptureState(winner);
-        minigameManager.attackingPlayer.SwitchCaptureState(winner);
+        MinigameManager.instance.fieldToPlayAbout.SwitchCaptureState(winner);
+        MinigameManager.instance.attackingPlayer.SwitchCaptureState(winner);
 
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
@@ -50,6 +50,6 @@ public class RPSNetworkManager : NetworkBehaviour
         }
 
         //Destroy runnting minigame
-        Destroy(FindObjectOfType<MinigameManager>().minigameRunning);
+        Destroy(MinigameManager.instance.minigameRunning);
     }
 }

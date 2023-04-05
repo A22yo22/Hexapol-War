@@ -78,8 +78,8 @@ public class GameOverManager : NetworkBehaviour
 
     void SetMinigamesPlayed()
     {
-        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed") + FindObjectOfType<MinigameManager>().minigamesPlayed);
-        gamesPlayed.text = "Minigames Played: " + FindObjectOfType<MinigameManager>().minigamesPlayed.ToString();
+        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed") + MinigameManager.instance.minigamesPlayed);
+        gamesPlayed.text = "Minigames Played: " + MinigameManager.instance.minigamesPlayed.ToString();
     }
 
     //Back
