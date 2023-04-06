@@ -46,6 +46,6 @@ public class FieldSpawner : NetworkBehaviour
             }
         }
 
-        if(PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap(this);
+        if(PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap();
     }
 }

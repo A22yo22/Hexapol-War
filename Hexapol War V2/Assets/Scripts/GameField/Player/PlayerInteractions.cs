@@ -75,12 +75,11 @@ public class PlayerInteractions : NetworkBehaviour
         if (FindObjectOfType<LobbyManager>().playerReady == 2 && !firstTileSpawned)
         {
             //Sets all spawned fields
-            FieldSpawner fieldSpawner = FindObjectOfType<FieldSpawner>();
             if (isServer)
             {
-                for (int i = 0; i < fieldSpawner.fieldsSpawned.Count; i++)
+                for (int i = 0; i < FieldSpawner.instance.fieldsSpawned.Count; i++)
                 {
-                    CmdAddHexagons(fieldSpawner.fieldsSpawned[i].GetComponent<NetworkIdentity>());
+                    CmdAddHexagons(FieldSpawner.instance.fieldsSpawned[i].GetComponent<NetworkIdentity>());
                 }
             }
             else if (isClientOnly)
@@ -94,7 +93,7 @@ public class PlayerInteractions : NetworkBehaviour
             {
                 foreach (GameObject field in FindObjectOfType<LobbyManager>().fieldssSpawned)
                 {
-                    field.transform.SetParent(FindObjectOfType<FieldSpawner>().parent);
+                    field.transform.SetParent(FieldSpawner.instance.parent);
                 }
             }
 
@@ -129,7 +128,7 @@ public class PlayerInteractions : NetworkBehaviour
 
             if (!firstTimePlayerCanMove)
             {
-                FindObjectOfType<FieldSpawner>().indicator.SetActive(true);
+                FieldSpawner.instance.indicator.SetActive(true);
                 firstTimePlayerCanMove = false;
             }
 
@@ -240,12 +239,12 @@ public class PlayerInteractions : NetworkBehaviour
     //Switches the player and moves to the next one
     public void SwitchPlayerAtMove()
     {
-        FindObjectOfType<FieldSpawner>().indicator.SetActive(false);
+        FieldSpawner.instance.indicator.SetActive(false);
         firstTimePlayerCanMove = true;
         
         RestSelectedFields();
 
-        FindObjectOfType<SaveMap>().SaveGameMap(FindObjectOfType<FieldSpawner>());
+        FindObjectOfType<SaveMap>().SaveGameMap();
 
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
