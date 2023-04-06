@@ -31,6 +31,9 @@ public class Health : NetworkBehaviour
 
                     player.CmdSetFieldState(MinigameManager.instance.attackingPlayer.GetComponent<NetworkIdentity>(), winner);
                     player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
+
+
+                    SaveMap.instance.SaveGameMap();
                 }
             }
             dead = true;

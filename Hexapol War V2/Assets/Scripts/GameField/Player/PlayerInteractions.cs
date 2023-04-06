@@ -103,6 +103,7 @@ public class PlayerInteractions : NetworkBehaviour
 
             if (PlayerPrefs.GetInt("fieldsSpawned") == 0)
             {
+                Debug.Log("New Map");
                 int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
                 while (lobbyManager.fieldssSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
                 {
@@ -244,8 +245,6 @@ public class PlayerInteractions : NetworkBehaviour
         
         RestSelectedFields();
 
-        FindObjectOfType<SaveMap>().SaveGameMap();
-
         //Switch player
         CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
 
@@ -258,12 +257,7 @@ public class PlayerInteractions : NetworkBehaviour
             RpcSetPlayer2ToMove();
         }
 
-        //Enable other player
-        if (otherPlayer != null)
-        {
-            //otherPlayer.enabled = true;
-            //enabled = false;
-        }
+        SaveMap.instance.SaveGameMap();
     }
 
 
@@ -328,7 +322,8 @@ public class PlayerInteractions : NetworkBehaviour
     [Command]
     public void CmdSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)
     {
-        RpcSetFieldState(identity, state);
+        //Debug.Log("Called");
+        if(SaveMap.instance.canSpawn) RpcSetFieldState(identity, state);
     }
     [ClientRpc]
     public void RpcSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)

@@ -6,23 +6,28 @@ using UnityEngine;
 
 public class SaveMap : NetworkBehaviour
 {
-    public string saveFilePath = "fildData.txt";
+    public static SaveMap instance;
+
+    [SyncVar]
+    public bool canSpawn = true;
+
+
+    private void Start()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     public void SaveGameMap()
     {
         PlayerPrefs.SetInt("fieldsSpawned", FieldSpawner.instance.fieldsSpawned.Count);
 
         int count = 0;
-        foreach(GameObject field in FieldSpawner.instance.fieldsSpawned)
+        foreach (GameObject field in FieldSpawner.instance.fieldsSpawned)
         {
             FieldData fieldData = field.GetComponent<FieldData>();
             PlayerPrefs.SetInt("fildState" + count, (int)fieldData.fieldState);
 
-            Debug.Log(fieldData.fieldState);
-
             count++;
-
-            //field.transform.position = new Vector3(field.transform.position.x, count * 0.25f, field.transform.position.z);
         }
 
         Debug.Log("--Saved Map--" + " Found fields: " + count);
@@ -38,17 +43,28 @@ public class SaveMap : NetworkBehaviour
             {
                 if (player.isOwned)
                 {
-                    Debug.Log((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i));
-                    player.CmdSetFieldState(
-                        FieldSpawner.instance.fieldsSpawned[i].GetComponent<NetworkIdentity>(),
-                        (FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i)
-                    );
+                    if ((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i) != FieldData.CaptureState.Clear)
+                    {
+                        FieldSpawner.instance.fieldsSpawned[i].GetComponent<FieldData>().SwitchCaptureState((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i));
 
-                    //FieldSpawner.instance.fieldsSpawned[i].transform.position = new Vector3(FieldSpawner.instance.fieldsSpawned[i].transform.position.x, i * 0.25f, FieldSpawner.instance.fieldsSpawned[i].transform.position.z);
+                        player.CmdSetFieldState(
+                            FieldSpawner.instance.fieldsSpawned[i].GetComponent<NetworkIdentity>(),
+                            (FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i)
+                        );
+                    }
                 }
             }
         }
 
         Debug.Log("--Loaded Map--" + " Fields: " + fieldsSpawned);
+
+        StartCoroutine(DelyToCanMove());
+    }
+
+    IEnumerator DelyToCanMove()
+    {
+        canSpawn = false;
+        yield return new WaitForSeconds(0.5f);
+        canSpawn = true;
     }
 }
