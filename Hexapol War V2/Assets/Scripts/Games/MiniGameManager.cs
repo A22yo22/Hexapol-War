@@ -38,6 +38,10 @@ public class MinigameManager : NetworkBehaviour
 
             player.transform.Find("Player").gameObject.SetActive(true);
 
+            BoxCollider spawnField = miniGame.transform.Find("SpawnField").GetComponent<BoxCollider>();
+            Vector3 spawnPosition = transform.position + new Vector3( Random.Range(-spawnField.size.x / 2f, spawnField.size.x / 2f), 1.5f, Random.Range(-spawnField.size.z / 2f, spawnField.size.z / 2f));
+            player.transform.Find("Player").position = spawnPosition;
+
             if (player.transform.Find("CanMove") != null)
             {
                 player.transform.Find("CanMove").gameObject.SetActive(false);
@@ -50,8 +54,8 @@ public class MinigameManager : NetworkBehaviour
         }
 
 
-        Camera.main.transform.position = new Vector3(0, 22.3f, 0);
-        Camera.main.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        //Camera.main.transform.position = new Vector3(0, 22.3f, 0);
+        //Camera.main.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
     public void OpenMiniGameame()
