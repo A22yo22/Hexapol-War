@@ -44,13 +44,13 @@ public class PlayerInteractions : NetworkBehaviour
         {
             thisPlayerTag = FieldData.CaptureState.Player1;
 
-            FindObjectOfType<FieldSpawner>().indicator.SetActive(true);
+            FieldSpawner.instance.indicator.SetActive(true);
             firstTimePlayerCanMove = false;
         }
         else if (isClientOnly)
         {
             thisPlayerTag = FieldData.CaptureState.Player2;
-            FindObjectOfType<FieldSpawner>().indicator.SetActive(false);
+            FieldSpawner.instance.indicator.SetActive(false);
             firstTimePlayerCanMove = true;
             CmdSetEnemyColor(GetComponent<NetworkIdentity>());
         }
@@ -101,14 +101,18 @@ public class PlayerInteractions : NetworkBehaviour
             if (lobbyManager.fieldssSpawned.Count == 0) return;
 
             //Set player start pos
-            int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
-            while (lobbyManager.fieldssSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
-            {
-                selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
-            }
 
-            CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
-            lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
+            if (PlayerPrefs.GetInt("fieldsSpawned") == 0)
+            {
+                int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+                while (lobbyManager.fieldssSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
+                {
+                    selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+                }
+
+                CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
+                lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
+            }
 
             //Get other player
             CmdSetOtherPlayeerVariable();
@@ -392,8 +396,7 @@ public class PlayerInteractions : NetworkBehaviour
     }
     [ClientRpc]
     public void RpcSetEnemyColor(NetworkIdentity id)
-    {
-        //Debug.Log("ColorSet" + id.GetComponent<PlayerInteractions>());
+    { 
         id.GetComponent<PlayerInteractions>().SetColorRed();
     }
 

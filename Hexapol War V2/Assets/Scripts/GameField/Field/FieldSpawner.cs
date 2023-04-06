@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FieldSpawner : NetworkBehaviour
 {
-    public static UiManager instance;
+    public static FieldSpawner instance;
 
     [Header("Spawn Propertys")]
     public int radius;
@@ -17,6 +17,11 @@ public class FieldSpawner : NetworkBehaviour
     public GameObject hexagonPrefab;
     public Transform parent;
     public GameObject indicator;
+
+    private void Start()
+    {
+        if (instance == null) { instance = this; }
+    }
 
     public void SpawnGrid()
     {
