@@ -330,8 +330,6 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)
     {
-        Debug.Log(state + " Fild state to set");
-
         identity.GetComponent<FieldData>().SwitchCaptureState(state);
 
         if (FindObjectOfType<FieldManager>().usedFields.IndexOf(identity.gameObject) == -1)
@@ -395,12 +393,13 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetEnemyColor(NetworkIdentity id)
     {
-        //Debug.Log("Called");
-        //Material enemyColor = new Material(Shader.Find("Standard"));
-        //enemyColor.color = Color.red;
+        //Debug.Log("ColorSet" + id.GetComponent<PlayerInteractions>());
+        id.GetComponent<PlayerInteractions>().SetColorRed();
+    }
 
-        Debug.Log(id.transform.Find("Player").GetComponent<Renderer>().materials[0] + " = " + enemyColor);
-        id.transform.Find("Player").GetComponent<Renderer>().materials[0] = enemyColor;
+    public void SetColorRed()
+    {
+        transform.Find("Player").GetComponent<MeshRenderer>().material = enemyColor;
     }
 }
 
