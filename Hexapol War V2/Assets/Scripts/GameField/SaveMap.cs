@@ -12,59 +12,24 @@ public class SaveMap : NetworkBehaviour
     {
         PlayerPrefs.SetInt("fieldsSpawned", FieldSpawner.instance.fieldsSpawned.Count);
 
-        StreamWriter saveFile = new StreamWriter(saveFilePath);
-
-        foreach (GameObject field in FieldSpawner.instance.fieldsSpawned)
-        {
-            FieldData fieldData = field.GetComponent<FieldData>();
-            saveFile.WriteLine((int)fieldData.fieldState);
-        }
-
-
-        /*
-        PlayerPrefs.SetInt("fieldsSpawned", FieldSpawner.instance.fieldsSpawned.Count);
-
         int count = 0;
         foreach(GameObject field in FieldSpawner.instance.fieldsSpawned)
         {
             FieldData fieldData = field.GetComponent<FieldData>();
             PlayerPrefs.SetInt("fildState" + count, (int)fieldData.fieldState);
 
-            Debug.Log(fieldData.fieldState+ ": " + count);
+            Debug.Log(fieldData.fieldState);
 
             count++;
+
+            //field.transform.position = new Vector3(field.transform.position.x, count * 0.25f, field.transform.position.z);
         }
 
-        //Debug.Log("--Saved Map--" + " Found fields: " + count);
-        */
+        Debug.Log("--Saved Map--" + " Found fields: " + count);
     }
 
     public void LoadGameMap()
     {
-        StreamReader saveFile = new StreamReader(saveFilePath);
-
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
-        {
-            if (player.isOwned)
-            {
-                int count = 0;
-                while ((saveFile.ReadLine()) != null)
-                {
-                    int value;
-                    if (int.TryParse(saveFile.ReadLine(), out value))
-                    {
-                        if (player.isOwned)
-                        {
-                            player.CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[count].GetComponent<NetworkIdentity>(), (FieldData.CaptureState)value);
-                        }
-
-                        count++;
-                    }
-                }
-            }
-        }
-
-        /*
         int fieldsSpawned = PlayerPrefs.GetInt("fieldsSpawned");
 
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
@@ -73,16 +38,17 @@ public class SaveMap : NetworkBehaviour
             {
                 if (player.isOwned)
                 {
-                    Debug.Log((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i) + ": " + i);
+                    Debug.Log((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i));
                     player.CmdSetFieldState(
                         FieldSpawner.instance.fieldsSpawned[i].GetComponent<NetworkIdentity>(),
                         (FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i)
                     );
+
+                    //FieldSpawner.instance.fieldsSpawned[i].transform.position = new Vector3(FieldSpawner.instance.fieldsSpawned[i].transform.position.x, i * 0.25f, FieldSpawner.instance.fieldsSpawned[i].transform.position.z);
                 }
             }
         }
 
-        //Debug.Log("--Loaded Map--" + " Fields: " + fieldsSpawned);
-        */
+        Debug.Log("--Loaded Map--" + " Fields: " + fieldsSpawned);
     }
 }
