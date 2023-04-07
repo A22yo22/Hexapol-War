@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7729187074094539834}
   m_Layer: 11
   m_Name: Cube (10)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,7 +91,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295054338569281695}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 3670601169496850091}
   m_Layer: 11
   m_Name: Cube (8)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,7 +188,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 892399697390849351}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 2989189185356525517}
   m_Layer: 11
   m_Name: Cube (11)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -285,7 +285,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700150111472838095}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 6924186246764434058}
   m_Layer: 11
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -382,7 +382,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069222760049958092}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 7194640428452215614}
   m_Layer: 11
   m_Name: Cube (7)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -479,7 +479,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2723997432676702169}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -544,7 +544,7 @@ GameObject:
   - component: {fileID: 568554694487074222}
   m_Layer: 11
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -621,7 +621,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3035961758113672187}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 1217403295811835535}
   m_Layer: 11
   m_Name: Cube (9)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -718,7 +718,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3742713289073106483}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1007,7 +1007,7 @@ GameObject:
   - component: {fileID: 2364426625492391507}
   m_Layer: 11
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1084,7 +1084,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6447454819635536671}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1104,7 +1104,7 @@ GameObject:
   - component: {fileID: 7355057566638602004}
   m_Layer: 11
   m_Name: Cube (6)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1181,7 +1181,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7909857162504763222}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1201,7 +1201,7 @@ GameObject:
   - component: {fileID: 3428584721472930391}
   m_Layer: 11
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1278,7 +1278,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8898576615109222391}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1298,7 +1298,7 @@ GameObject:
   - component: {fileID: 53805467299838136}
   m_Layer: 11
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1375,7 +1375,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9001811007381045116}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da8a4f41b646fb3429f1ba83e7e0400f, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
