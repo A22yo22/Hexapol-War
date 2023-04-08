@@ -3,18 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : NetworkBehaviour
 {
     public int health = 3;
     public int startHealth = 3;
-    public TMP_Text healthbar;
+    public Image healthbar;
 
     bool dead = false;
 
     private void Update()
     {
-        healthbar.text = health.ToString();
+        UpdateHelath();
+        //healthbar.text = health.ToString();
 
         if (!isLocalPlayer) { return; }
 
@@ -38,6 +40,12 @@ public class Health : NetworkBehaviour
             }
             dead = true;
         }
+    }
+
+    void UpdateHelath()
+    {
+        Debug.Log(Mathf.Lerp(0, 1, Mathf.InverseLerp(0, startHealth, health)));
+        healthbar.fillAmount = Mathf.Lerp(0, 1, Mathf.InverseLerp(0, startHealth, health));
     }
 
     public void ResetMinigameHealth()

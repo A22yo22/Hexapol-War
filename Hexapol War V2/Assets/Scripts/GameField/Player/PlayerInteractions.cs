@@ -101,6 +101,7 @@ public class PlayerInteractions : NetworkBehaviour
 
             //Set player start pos
 
+            Debug.Log(PlayerPrefs.GetInt("fieldsSpawned"));
             if (PlayerPrefs.GetInt("fieldsSpawned") == 0)
             {
                 Debug.Log("New Map");
@@ -110,8 +111,17 @@ public class PlayerInteractions : NetworkBehaviour
                     selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
                 }
 
+                FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().SwitchCaptureState(thisPlayerTag);
                 CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
                 lastSelectedField = FieldSpawner.instance.fieldsSpawned[selectedField];
+
+
+                while (FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
+                {
+                    selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
+                }
+                FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().SwitchCaptureState(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
+                CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), Checks.GetOppositeOfPlayerTag(thisPlayerTag));
             }
 
             //Get other player
