@@ -39,13 +39,16 @@ public class FieldSpawner : NetworkBehaviour
 
                     GameObject hexagon = Instantiate(hexagonPrefab, hexPosition, Quaternion.Euler(90, 90, 0));
                     hexagon.transform.parent = parent;
-                    fieldsSpawned.Add(hexagon);
-
                     NetworkServer.Spawn(hexagon);
+
+                    foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+                    {
+                        if(player.isOwned) player.CmdAddToList(hexagon.GetComponent<NetworkIdentity>());
+                    }
+
                 }
             }
         }
-
-        if(PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap();
     }
+
 }

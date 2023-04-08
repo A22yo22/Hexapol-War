@@ -18,9 +18,13 @@ public class LobbyManager : NetworkBehaviour
     public void ReadyUp()
     {
         playerReady++;
-        if (playerReady == 2)
+        if (playerReady == 1)
         {
             FieldSpawner.instance.SpawnGrid();
+        }
+        if (playerReady == 2)
+        {
+            if (PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap();
         }
     }
 

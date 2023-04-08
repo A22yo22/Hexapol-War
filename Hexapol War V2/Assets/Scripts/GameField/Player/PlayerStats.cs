@@ -31,46 +31,37 @@ public class PlayerStats : NetworkBehaviour
     }
 
     //Refresh remaining fields list
+    int blueFieldsFound = 0;
+    int redFieldsFound = 0;
     public void RefreshRemainingFields()
     {
-        FieldManager fieldManager = FindObjectOfType<FieldManager>();
-        fieldManager.remainingFieldsPlayer1.Clear();
-        fieldManager.remainingFieldsPlayer2.Clear();
+        StartCoroutine(RemainingCounterCheck());
+    }
 
-        foreach (var field in fieldManager.usedFields)
+    IEnumerator RemainingCounterCheck()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        foreach (GameObject field in FieldSpawner.instance.fieldsSpawned)
         {
             if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player1)
             {
-                fieldManager.remainingFieldsPlayer1.Add(field);
+                blueFieldsFound++;
             }
             else if (field.GetComponent<FieldData>().fieldState == FieldData.CaptureState.Player2)
             {
-                fieldManager.remainingFieldsPlayer2.Add(field);
-
+                redFieldsFound++;
             }
         }
 
-        if (GetComponent<PlayerInteractions>().thisPlayerTag == FieldData.CaptureState.Player1)
-        {
-            fieldsCaptured++;
-        }
-        else if (GetComponent<PlayerInteractions>().thisPlayerTag == FieldData.CaptureState.Player2)
-        {
-            fieldsCaptured++;
-        }
+        Debug.Log("Blue: " + blueFieldsFound);
+        Debug.Log("Red: " + redFieldsFound);
 
-        RemainingCounterCheck();
-    }
-
-    public void RemainingCounterCheck()
-    {
-        FieldManager fieldManager = FindObjectOfType<FieldManager>();
-
-        if (fieldManager.remainingFieldsPlayer1.Count == 0)
+        if (blueFieldsFound == 0)
         {
             CmdGameOver((int)time);
         }
-        else if (fieldManager.remainingFieldsPlayer2.Count == 0)
+        else if (redFieldsFound == 0)
         {
             CmdGameOver((int)time);
         }

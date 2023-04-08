@@ -97,21 +97,21 @@ public class PlayerInteractions : NetworkBehaviour
                 }
             }
 
-            if (lobbyManager.fieldssSpawned.Count == 0) return;
+            if (FieldSpawner.instance.fieldsSpawned.Count == 0) return;
 
             //Set player start pos
 
             if (PlayerPrefs.GetInt("fieldsSpawned") == 0)
             {
                 Debug.Log("New Map");
-                int selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
-                while (lobbyManager.fieldssSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
+                int selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
+                while (FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
                 {
-                    selectedField = Random.Range(0, lobbyManager.fieldssSpawned.Count);
+                    selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
                 }
 
-                CmdSetFieldState(lobbyManager.fieldssSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
-                lastSelectedField = lobbyManager.fieldssSpawned[selectedField];
+                CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
+                lastSelectedField = FieldSpawner.instance.fieldsSpawned[selectedField];
             }
 
             //Get other player
@@ -340,6 +340,19 @@ public class PlayerInteractions : NetworkBehaviour
 
         //Game started
         GetComponent<PlayerStats>().gameStarted = true;
+    }
+
+    //Adds a field to the fields spawed list
+    [Command]
+    public void CmdAddToList(NetworkIdentity id)
+    {
+        RpcAddToList(id);
+    }
+
+    [ClientRpc]
+    public void RpcAddToList(NetworkIdentity id)
+    {
+        FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
     }
 
     //Switch player at move 

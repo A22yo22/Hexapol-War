@@ -30,7 +30,7 @@ public class SaveMap : NetworkBehaviour
             count++;
         }
 
-        Debug.Log("--Saved Map--" + " Found fields: " + count);
+        //Debug.Log("--Saved Map--" + " Found fields: " + count);
     }
 
     public void LoadGameMap()
@@ -56,7 +56,7 @@ public class SaveMap : NetworkBehaviour
             }
         }
 
-        Debug.Log("--Loaded Map--" + " Fields: " + fieldsSpawned);
+        //Debug.Log("--Loaded Map--" + " Fields: " + fieldsSpawned);
 
         StartCoroutine(DelyToCanMove());
     }
