@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
     {
         manager.StartHost();
 
-        StartGame();
+        //StartGame();
     }
 
     public void Join()

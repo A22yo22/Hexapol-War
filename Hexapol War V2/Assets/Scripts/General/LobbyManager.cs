@@ -20,7 +20,7 @@ public class LobbyManager : NetworkBehaviour
         playerReady++;
         if (playerReady == 1)
         {
-            FieldSpawner.instance.SpawnGrid();
+            //FieldSpawner.instance.SpawnGrid();
         }
         if (playerReady == 2)
         {
