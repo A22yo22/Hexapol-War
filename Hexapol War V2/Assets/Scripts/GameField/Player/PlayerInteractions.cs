@@ -188,7 +188,11 @@ public class PlayerInteractions : NetworkBehaviour
     {
         if (fieldState == FieldData.CaptureState.Select)
         {
+            selectedField.GetComponent<FieldData>().SwitchCaptureState(thisPlayerTag);
             CmdSetFieldState(selectedField.GetComponent<NetworkIdentity>(), thisPlayerTag);
+
+            SaveMap.instance.SaveGameMap();
+
             GetComponent<PlayerStats>().remainingFields.Add(selectedField);
 
             SwitchPlayerAtMove();

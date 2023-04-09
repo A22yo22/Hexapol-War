@@ -36,15 +36,14 @@ public class SaveMenuManager : MonoBehaviour
         FieldSpawner.instance.radius = int.Parse(scale.text);
         FieldSpawner.instance.SpawnGrid();
 
-        StartCoroutine(SetStartingFields(int.Parse(startingFields.text)));
+        SetStartingFields(int.Parse(startingFields.text));
+
+        SaveMap.instance.currentSave = PlayerPrefs.GetInt("SavedMaps");
+        SaveMap.instance.SaveGameMap();
     }
 
-    IEnumerator SetStartingFields(int fields)
+    void SetStartingFields(int fields)
     {
-        yield return new WaitForSeconds(0.2f);
-
-        Debug.Log("Set Fields");
-
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
             if (player.isOwned)
@@ -104,6 +103,9 @@ public class SaveMenuManager : MonoBehaviour
             int scale = PlayerPrefs.GetInt("SavedMapScale" + i);
             int blue = PlayerPrefs.GetInt("SavedMapBlue" + i);
             int red = PlayerPrefs.GetInt("SavedMapRed" + i);
+
+            Debug.Log("Blue2 " + PlayerPrefs.GetInt("SavedMapBlue" + i) + " i = " + i);
+            Debug.Log("Red2 " + PlayerPrefs.GetInt("SavedMapBlue" + i));
 
             GameObject savedMapObject = Instantiate(savedMapPrefab);
             savedMapObject.transform.SetParent(loadSaveParent);

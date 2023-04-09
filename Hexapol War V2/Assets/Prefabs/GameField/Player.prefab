@@ -479,7 +479,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4407027616088828492}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61d0adb108711254ba14c144f6eb7207, type: 3}
   m_Name: 
@@ -493,6 +493,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   otherPlayer: {fileID: 0}
+  lastSelectedField: {fileID: 0}
   canMove: 1
   enemyColor: {fileID: 2100000, guid: ab35b60bb04891542bb432ee9b031c89, type: 2}
   selectedFields: []

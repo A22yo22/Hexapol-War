@@ -23,11 +23,11 @@ public class LoadObjectManager : MonoBehaviour
         titleText.text = title;
         playedWithText.text = "Played with: \n" + playedWith;
 
-        scaleText.text = "Scale: " + scale;     scale = scaleThis;
+        scaleText.text = "Scale: " + scaleThis;     scale = scaleThis;
         blueText.text = "Blue: " + blue;
         redText.text = "Red: " + red;
 
-        idThis++;
+        id = idThis;
 
         press.onClick.AddListener(Clicked);
     }

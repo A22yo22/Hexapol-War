@@ -28,10 +28,12 @@ public class Health : NetworkBehaviour
                 {
                     FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(GetComponent<PlayerInteractions>().thisPlayerTag);
 
-
+                    MinigameManager.instance.attackingPlayer.GetComponent<FieldData>().SwitchCaptureState(winner);
+                    MinigameManager.instance.fieldToPlayAbout.GetComponent<FieldData>().SwitchCaptureState(winner);
                     player.CmdSetFieldState(MinigameManager.instance.attackingPlayer.GetComponent<NetworkIdentity>(), winner);
                     player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
 
+                    SaveMap.instance.SaveGameMap();
 
                     SaveMap.instance.SaveGameMap();
                 }

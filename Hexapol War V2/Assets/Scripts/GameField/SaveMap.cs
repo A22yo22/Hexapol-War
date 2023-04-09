@@ -27,7 +27,6 @@ public class SaveMap : NetworkBehaviour
     {
         PlayerPrefs.SetInt("fieldsSpawned" + currentSave, FieldSpawner.instance.fieldsSpawned.Count);
 
-
         int blue = 0;
         int red = 0;
         int count = 0;
@@ -42,14 +41,17 @@ public class SaveMap : NetworkBehaviour
             count++;
         }
 
-
         PlayerPrefs.SetInt("SavedMapBlue" + currentSave, blue);
         PlayerPrefs.SetInt("SavedMapRed" + currentSave, red);
+
+
     }
 
     public void LoadGameMap(int id)
     {
         currentSave = id;
+
+        Debug.Log(id);
 
         mainMenu.SetActive(false);
 
