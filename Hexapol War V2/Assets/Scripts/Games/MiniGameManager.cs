@@ -29,6 +29,7 @@ public class MinigameManager : NetworkBehaviour
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
+            Debug.Log("Repositond");
         }
 ;
 

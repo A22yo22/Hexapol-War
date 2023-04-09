@@ -168,7 +168,7 @@ public class PlayerInteractions : NetworkBehaviour
     {
         //Reset used field possitions
         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-        lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+        if(lastSelectedField != null) lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
 
         //Reset selected fields
         for (int i = 0; i < selectedFields.Count; i++)
@@ -341,6 +341,7 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcAddToList(NetworkIdentity id)
     {
+        id.transform.SetParent(FieldSpawner.instance.transform);
         if(!FieldSpawner.instance.fieldsSpawned.Contains(id.gameObject)) FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
     }
 

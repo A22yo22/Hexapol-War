@@ -104,9 +104,6 @@ public class SaveMenuManager : MonoBehaviour
             int blue = PlayerPrefs.GetInt("SavedMapBlue" + i);
             int red = PlayerPrefs.GetInt("SavedMapRed" + i);
 
-            Debug.Log("Blue2 " + PlayerPrefs.GetInt("SavedMapBlue" + i) + " i = " + i);
-            Debug.Log("Red2 " + PlayerPrefs.GetInt("SavedMapBlue" + i));
-
             GameObject savedMapObject = Instantiate(savedMapPrefab);
             savedMapObject.transform.SetParent(loadSaveParent);
             savedMapObject.GetComponent<LoadObjectManager>().SetUp(title, playedWith, scale, blue, red, i);
