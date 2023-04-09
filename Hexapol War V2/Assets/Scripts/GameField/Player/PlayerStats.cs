@@ -31,16 +31,12 @@ public class PlayerStats : NetworkBehaviour
     }
 
     //Refresh remaining fields list
-    int blueFieldsFound = 0;
-    int redFieldsFound = 0;
+    public int blueFieldsFound = 0;
+    public int redFieldsFound = 0;
     public void RefreshRemainingFields()
     {
-        StartCoroutine(RemainingCounterCheck());
-    }
-
-    IEnumerator RemainingCounterCheck()
-    {
-        yield return new WaitForSeconds(0.2f);
+        blueFieldsFound = 0;
+        redFieldsFound = 0;
 
         foreach (GameObject field in FieldSpawner.instance.fieldsSpawned)
         {

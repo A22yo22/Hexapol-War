@@ -100,7 +100,7 @@ public class PlayerInteractions : NetworkBehaviour
             if (FieldSpawner.instance.fieldsSpawned.Count == 0) return;
 
             //Get other player
-            CmdSetOtherPlayeerVariable();
+            //CmdSetOtherPlayeerVariable();
 
             GetComponent<PlayerStats>().fieldsCaptured = 0;
 
@@ -234,9 +234,6 @@ public class PlayerInteractions : NetworkBehaviour
         
         RestSelectedFields();
 
-        //Switch player
-        CmdSetPlayerAtMove(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
-
         if (Checks.GetOppositeOfPlayerTag(thisPlayerTag) == FieldData.CaptureState.Player1)
         {
             CmdSetPlayer1ToMove();
@@ -311,7 +308,6 @@ public class PlayerInteractions : NetworkBehaviour
     [Command]
     public void CmdSetFieldState(NetworkIdentity identity, FieldData.CaptureState state)
     {
-        //Debug.Log("Called");
         if(SaveMap.instance.canSpawn) RpcSetFieldState(identity, state);
     }
     [ClientRpc]
@@ -345,13 +341,6 @@ public class PlayerInteractions : NetworkBehaviour
         if(!FieldSpawner.instance.fieldsSpawned.Contains(id.gameObject)) FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
     }
 
-    //Switch player at move 
-    [Command]
-    public void CmdSetPlayerAtMove(FieldData.CaptureState playerToWhoWillHaveTheMove)
-    {
-        FindObjectOfType<FieldManager>().playerAtMove = playerToWhoWillHaveTheMove;
-    }
-
     //Sets other player variable
     [Command]
     public void CmdSetOtherPlayeerVariable()
@@ -363,8 +352,8 @@ public class PlayerInteractions : NetworkBehaviour
     {
         List<PlayerInteractions> playersConnected = FindObjectsOfType<PlayerInteractions>().ToList();
 
-        FindObjectOfType<FieldManager>().players1 = playersConnected[1];
-        FindObjectOfType<FieldManager>().players2 = playersConnected[0];
+        //FindObjectOfType<FieldManager>().players1 = playersConnected[1];
+        //FindObjectOfType<FieldManager>().players2 = playersConnected[0];
     }
 
     //Set player who can move

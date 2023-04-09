@@ -35,7 +35,7 @@ public class GameOverManager : NetworkBehaviour
     void SetLostOrWon()
     {
         //is player one and won
-        if (isServer && FindObjectOfType<FieldManager>().remainingFieldsPlayer1.Count == 0)
+        if (isServer && PlayerStats.instance.blueFieldsFound == 0)
         {
             lostOrWon.text = "Lost";
             PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost") + 1);
@@ -46,7 +46,7 @@ public class GameOverManager : NetworkBehaviour
         }
 
         //is player two and won
-        if (isClientOnly && FindObjectOfType<FieldManager>().remainingFieldsPlayer2.Count == 0)
+        if (isClientOnly && PlayerStats.instance.redFieldsFound == 0)
         {
             lostOrWon.text = "Lost";
             PlayerPrefs.SetInt("GamesLost", PlayerPrefs.GetInt("GamesLost") + 1);
