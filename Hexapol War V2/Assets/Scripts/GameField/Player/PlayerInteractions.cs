@@ -15,7 +15,7 @@ public class PlayerInteractions : NetworkBehaviour
     public PlayerInteractions otherPlayer;
 
     GameObject selectedField;
-    GameObject lastSelectedField;
+    public GameObject lastSelectedField;
 
     public bool canMove = true;
 
@@ -98,31 +98,6 @@ public class PlayerInteractions : NetworkBehaviour
             }
 
             if (FieldSpawner.instance.fieldsSpawned.Count == 0) return;
-
-            //Set player start pos
-
-            Debug.Log(PlayerPrefs.GetInt("fieldsSpawned"));
-            if (PlayerPrefs.GetInt("fieldsSpawned") == 0)
-            {
-                Debug.Log("New Map");
-                int selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
-                while (FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
-                {
-                    selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
-                }
-
-                FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().SwitchCaptureState(thisPlayerTag);
-                CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), thisPlayerTag);
-                lastSelectedField = FieldSpawner.instance.fieldsSpawned[selectedField];
-
-
-                while (FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().fieldState != FieldData.CaptureState.Clear)
-                {
-                    selectedField = Random.Range(0, FieldSpawner.instance.fieldsSpawned.Count);
-                }
-                FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().SwitchCaptureState(Checks.GetOppositeOfPlayerTag(thisPlayerTag));
-                CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), Checks.GetOppositeOfPlayerTag(thisPlayerTag));
-            }
 
             //Get other player
             CmdSetOtherPlayeerVariable();
@@ -362,7 +337,7 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcAddToList(NetworkIdentity id)
     {
-        FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
+        if(!FieldSpawner.instance.fieldsSpawned.Contains(id.gameObject)) FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
     }
 
     //Switch player at move 
@@ -396,14 +371,20 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetPlayer1ToMove()
     {
-        FindObjectOfType<FieldManager>().players1.canMove = true;
-        FindObjectOfType<FieldManager>().players2.canMove = false;
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.thisPlayerTag == FieldData.CaptureState.Player1) player.canMove = true;
+            else if (player.thisPlayerTag == FieldData.CaptureState.Player2) player.canMove = false;
+        }
     }
     [ClientRpc]
     public void RpcSetPlayer2ToMove()
     {
-        FindObjectOfType<FieldManager>().players2.canMove = true;
-        FindObjectOfType<FieldManager>().players1.canMove = false;
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.thisPlayerTag == FieldData.CaptureState.Player1) player.canMove = false;
+            else if (player.thisPlayerTag == FieldData.CaptureState.Player2) player.canMove = true;
+        }
     }
 
     [Command]

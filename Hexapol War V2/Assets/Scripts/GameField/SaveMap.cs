@@ -12,9 +12,10 @@ public class SaveMap : NetworkBehaviour
     [SyncVar]
     public bool canSpawn = true;
 
-    //Save Menu Settings
-    [SerializeField] Transform loadSaveParent;
-    [SerializeField] GameObject savedMapPrefab;
+    [SyncVar]
+    public int currentSave = 0;
+
+    [SerializeField] GameObject mainMenu;
 
 
     private void Start()
@@ -22,82 +23,56 @@ public class SaveMap : NetworkBehaviour
         if (instance == null) { instance = this; }
     }
 
-    public void CreateMap(string title, string playedWith, int scale, int blue = 1, int red = 1)
-    {
-        PlayerPrefs.SetInt("SavedMaps", PlayerPrefs.GetInt("SavedMaps") + 1);
-
-        int createdMapId = PlayerPrefs.GetInt("SavedMaps");
-
-        PlayerPrefs.SetString("SavedMapTitle" + createdMapId, title);
-        PlayerPrefs.SetString("SavedMapPlayedWith" + createdMapId, playedWith);
-
-        PlayerPrefs.SetInt("SavedMapScale" + createdMapId, scale);
-        PlayerPrefs.SetInt("SavedMapBlue" + createdMapId, blue);
-        PlayerPrefs.SetInt("SavedMapRed" + createdMapId, red);
-
-    }
-
     public void SaveGameMap()
     {
-        PlayerPrefs.SetInt("fieldsSpawned", FieldSpawner.instance.fieldsSpawned.Count);
+        PlayerPrefs.SetInt("fieldsSpawned" + currentSave, FieldSpawner.instance.fieldsSpawned.Count);
 
+
+        int blue = 0;
+        int red = 0;
         int count = 0;
         foreach (GameObject field in FieldSpawner.instance.fieldsSpawned)
         {
             FieldData fieldData = field.GetComponent<FieldData>();
-            PlayerPrefs.SetInt("fildState" + count, (int)fieldData.fieldState);
+            PlayerPrefs.SetInt("fildState" + currentSave + count, (int)fieldData.fieldState);
+
+            if (fieldData.fieldState == FieldData.CaptureState.Player1) { blue++; }
+            else if (fieldData.fieldState == FieldData.CaptureState.Player2) { red++; }
 
             count++;
         }
 
-        //Debug.Log("--Saved Map--" + " Found fields: " + count);
+
+        PlayerPrefs.SetInt("SavedMapBlue" + currentSave, blue);
+        PlayerPrefs.SetInt("SavedMapRed" + currentSave, red);
     }
 
-    public void LoadSavedList()
+    public void LoadGameMap(int id)
     {
-        //Clear loaded saves
-        for (int i = 0; i < loadSaveParent.childCount; i++)
-        {
-            Destroy(loadSaveParent.GetChild(i).gameObject);
-        }
+        currentSave = id;
 
-        //Get Saved maps
-        int savedMaps = PlayerPrefs.GetInt("SavedMaps");
-
-        //Show all new Saves
-        for(int i = 0; i < savedMaps; i++)
-        {
-            string title = PlayerPrefs.GetString("SavedMapTitle " + i);
-            string playedWith = PlayerPrefs.GetString("SavedMapPlayedWith " + i);
-
-            int scale = PlayerPrefs.GetInt("SavedMapScale " + i);
-            int blue = PlayerPrefs.GetInt("SavedMapBlue " + i);
-            int red = PlayerPrefs.GetInt("SavedMapRed " + i);
-
-            GameObject savedMapObject = Instantiate(savedMapPrefab);
-            savedMapObject.transform.SetParent(loadSaveParent);
-            savedMapObject.GetComponent<LoadObjectManager>().SetUp(title, playedWith, scale, blue, red);
-        }
-    }
-
-
-    public void LoadGameMap()
-    {
-        int fieldsSpawned = PlayerPrefs.GetInt("fieldsSpawned");
+        mainMenu.SetActive(false);
 
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
-            for (int i = 0; i < fieldsSpawned; i++)
+            player.enabled = true;
+        }
+
+        int fieldsSpawned = PlayerPrefs.GetInt("fieldsSpawned" + currentSave);
+
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.isOwned)
             {
-                if (player.isOwned)
+                for (int i = 0; i < fieldsSpawned; i++)
                 {
-                    if ((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i) != FieldData.CaptureState.Clear)
+                    if ((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + currentSave + i) != FieldData.CaptureState.Clear)
                     {
-                        FieldSpawner.instance.fieldsSpawned[i].GetComponent<FieldData>().SwitchCaptureState((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i));
+                        FieldSpawner.instance.fieldsSpawned[i].GetComponent<FieldData>().SwitchCaptureState((FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + currentSave + i));
 
                         player.CmdSetFieldState(
                             FieldSpawner.instance.fieldsSpawned[i].GetComponent<NetworkIdentity>(),
-                            (FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + i)
+                            (FieldData.CaptureState)PlayerPrefs.GetInt("fildState" + currentSave + i)
                         );
                     }
                 }

@@ -41,6 +41,8 @@ public class FieldSpawner : NetworkBehaviour
                     hexagon.transform.parent = parent;
                     NetworkServer.Spawn(hexagon);
 
+                    fieldsSpawned.Add(hexagon);
+
                     foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
                     {
                         if(player.isOwned) player.CmdAddToList(hexagon.GetComponent<NetworkIdentity>());

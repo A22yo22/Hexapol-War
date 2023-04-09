@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
     {
         manager.StartHost();
 
-        //StartGame();
+        //StartGame(); 
     }
 
     public void Join()
@@ -54,6 +54,5 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         mainMenu.SetActive(false);
-        lobby.SetActive(true);
     }
 }

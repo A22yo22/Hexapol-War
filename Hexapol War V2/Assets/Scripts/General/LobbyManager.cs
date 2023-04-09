@@ -24,7 +24,12 @@ public class LobbyManager : NetworkBehaviour
         }
         if (playerReady == 2)
         {
-            if (PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap();
+            foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+            {
+                player.enabled = true;
+            }
+
+            //if (PlayerPrefs.GetInt("fieldsSpawned") != 0) FindObjectOfType<SaveMap>().LoadGameMap();
         }
     }
 

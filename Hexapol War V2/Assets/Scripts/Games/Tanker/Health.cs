@@ -22,8 +22,6 @@ public class Health : NetworkBehaviour
 
         if (health <= 0 && !dead)
         {
-            Debug.Log("Lost");
-
             foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
             {
                 if (player.isOwned)
@@ -44,7 +42,6 @@ public class Health : NetworkBehaviour
 
     void UpdateHelath()
     {
-        Debug.Log(Mathf.Lerp(0, 1, Mathf.InverseLerp(0, startHealth, health)));
         healthbar.fillAmount = Mathf.Lerp(0, 1, Mathf.InverseLerp(0, startHealth, health));
     }
 
