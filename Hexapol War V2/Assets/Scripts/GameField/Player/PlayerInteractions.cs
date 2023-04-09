@@ -341,21 +341,6 @@ public class PlayerInteractions : NetworkBehaviour
         if(!FieldSpawner.instance.fieldsSpawned.Contains(id.gameObject)) FieldSpawner.instance.fieldsSpawned.Add(id.gameObject);
     }
 
-    //Sets other player variable
-    [Command]
-    public void CmdSetOtherPlayeerVariable()
-    {
-        RpcSetOtherPlayeerVariable();
-    }
-    [ClientRpc]
-    public void RpcSetOtherPlayeerVariable()
-    {
-        List<PlayerInteractions> playersConnected = FindObjectsOfType<PlayerInteractions>().ToList();
-
-        //FindObjectOfType<FieldManager>().players1 = playersConnected[1];
-        //FindObjectOfType<FieldManager>().players2 = playersConnected[0];
-    }
-
     //Set player who can move
     [Command]
     public void CmdSetPlayer1ToMove()
