@@ -1,6 +1,7 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -15,7 +16,8 @@ public class PlayerInteractions : NetworkBehaviour
     public PlayerInteractions otherPlayer;
 
     GameObject selectedField;
-    public GameObject lastSelectedField;
+    [SyncVar]
+    public List<GameObject> lastSelectedFields;
 
     public bool canMove = true;
 
@@ -126,7 +128,7 @@ public class PlayerInteractions : NetworkBehaviour
                 if (Physics.Raycast(ray, out hit))
                 {
                     //Sets last selected field to current selcted 
-                    if (selectedField != null) lastSelectedField = selectedField;
+                    if (selectedField != null) lastSelectedFields.Add(selectedField);
                     selectedField = hit.transform.gameObject;
 
                     //Gets the state of the selected field
@@ -168,7 +170,10 @@ public class PlayerInteractions : NetworkBehaviour
     {
         //Reset used field possitions
         selectedField.transform.position = new Vector3(selectedField.transform.position.x, 0f, selectedField.transform.position.z);
-        if(lastSelectedField != null) lastSelectedField.transform.position = new Vector3(lastSelectedField.transform.position.x, 0, lastSelectedField.transform.position.z);
+        foreach (GameObject field in lastSelectedFields)
+        {
+            field.transform.position = new Vector3(field.transform.position.x, 0, field.transform.position.z);
+        }
 
         //Reset selected fields
         for (int i = 0; i < selectedFields.Count; i++)
@@ -196,6 +201,7 @@ public class PlayerInteractions : NetworkBehaviour
             GetComponent<PlayerStats>().remainingFields.Add(selectedField);
 
             SwitchPlayerAtMove();
+            lastSelectedFields.Clear();
         }
         else
         {
@@ -253,7 +259,12 @@ public class PlayerInteractions : NetworkBehaviour
     {
         RestSelectedFields();
 
-        CmdStartMinigame(fieldToPlayAbout,lastSelectedField);
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            player.GetComponent<Health>().ResetMinigameHealth(player.lastSelectedFields.Count);
+        }
+
+        CmdStartMinigame(fieldToPlayAbout, lastSelectedFields, lastSelectedFields.Count);
     }
 
     //Network section
@@ -263,18 +274,24 @@ public class PlayerInteractions : NetworkBehaviour
 
     //Start minigame
     [Command]
-    public void CmdStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
+    public void CmdStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayer, int attackers)
     {
         MinigameManager.instance.OpenMiniGameame();
         RpcStartMinigame(fieldToPlayAbout, attackingPlayer);
     }
     [ClientRpc]
-    public void RpcStartMinigame(GameObject fieldToPlayAbout, GameObject attackingPlayer)
+    public void RpcStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayers)
     {
         MinigameManager.instance.fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
-        MinigameManager.instance.attackingPlayer = attackingPlayer.GetComponent<FieldData>();
+        foreach (GameObject field in attackingPlayers)
+        {
+            MinigameManager.instance.attackingPlayers.Add(field.GetComponent<FieldData>());
+        }
 
         MinigameManager.instance.StartMiniGame();
+
+
+        //GetComponent<Health>().UpdateHealth();
     }
 
     //Field stuff
@@ -389,6 +406,7 @@ public class Checks
     //Checks if player can place on selected field
     public static bool CanMoveHere(FieldData.CaptureState state, FieldData.CaptureState playerTag)
     {
+        //if (state == FieldData.CaptureState.Select) return true;
         if (state == playerTag || state == FieldData.CaptureState.Select) return true;
 
         return false;

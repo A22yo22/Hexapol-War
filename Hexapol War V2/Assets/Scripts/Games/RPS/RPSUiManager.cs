@@ -8,6 +8,7 @@ using System.Linq;
 
 public class RPSUiManager : NetworkBehaviour
 {
+    /*
     public GameObject RPSUi;
 
     public TMP_Text selectedItem;
@@ -70,4 +71,5 @@ public class RPSUiManager : NetworkBehaviour
         HideRPSUi();
         selectedItem.text += ": Paper";
     }
+    */
 }

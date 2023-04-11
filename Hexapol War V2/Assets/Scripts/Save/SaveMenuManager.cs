@@ -61,7 +61,7 @@ public class SaveMenuManager : MonoBehaviour
 
                     FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<FieldData>().SwitchCaptureState(FieldData.CaptureState.Player1);
                     player.CmdSetFieldState(FieldSpawner.instance.fieldsSpawned[selectedField].GetComponent<NetworkIdentity>(), FieldData.CaptureState.Player1);
-                    player.lastSelectedField = FieldSpawner.instance.fieldsSpawned[selectedField];
+                    player.lastSelectedFields.Add(FieldSpawner.instance.fieldsSpawned[selectedField]);
                 }
 
 

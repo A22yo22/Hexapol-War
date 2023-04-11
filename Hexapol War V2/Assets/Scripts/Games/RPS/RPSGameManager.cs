@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RPSGameManager : NetworkBehaviour
 {
+    /*
     [SyncVar] public RPS player1Choice;
     [SyncVar] public RPS player2Choice;
 
@@ -115,4 +116,5 @@ public class RPSGameManager : NetworkBehaviour
             }
         }
     }
+    */
 }

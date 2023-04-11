@@ -10,7 +10,7 @@ public class MinigameManager : NetworkBehaviour
     public int minigamesPlayed;
 
     public FieldData fieldToPlayAbout;
-    public FieldData attackingPlayer;
+    public List<FieldData> attackingPlayers;
 
     public List<GameObject> gameFieldFolder;
     public GameObject miniGame;
@@ -29,7 +29,6 @@ public class MinigameManager : NetworkBehaviour
         foreach (GameObject gameFieldObject in gameFieldFolder)
         {
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
-            Debug.Log("Repositond");
         }
 ;
 
@@ -48,15 +47,12 @@ public class MinigameManager : NetworkBehaviour
                 player.transform.Find("CanMove").gameObject.SetActive(false);
             }
 
+            //Disables all minigame objects
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<TankTurret>().enabled = true;
-            player.GetComponent<Health>().enabled = true;
-            player.GetComponent<Health>().ResetMinigameHealth();
+
+            //player.GetComponent<Health>().ResetMinigameHealth(1);
         }
-
-
-        //Camera.main.transform.position = new Vector3(0, 22.3f, 0);
-        //Camera.main.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
     public void OpenMiniGameame()
@@ -85,14 +81,18 @@ public class MinigameManager : NetworkBehaviour
 
         Destroy(minigameRunning);
 
-        //Refreshing game over manager              BROKEN!!!
+        //Refreshing game over manager
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
             if (player.thisPlayerTag != FieldData.CaptureState.Clear)
             {
                 player.GetComponent<PlayerStats>().RefreshRemainingFields();
             }
+
+            //Clears all sellected fields of the player
+            player.lastSelectedFields.Clear();
         }
+
 
         //Set camera
         Camera.main.transform.position = new Vector3(0, 9.3f, -8.59f);

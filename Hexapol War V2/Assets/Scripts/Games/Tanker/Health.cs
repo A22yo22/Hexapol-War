@@ -7,18 +7,22 @@ using UnityEngine.UI;
 
 public class Health : NetworkBehaviour
 {
+    [SyncVar]
     public int health = 3;
+
     public int startHealth = 3;
+
+    [SyncVar]
+    public int actualHealth;
+
     public Image healthbar;
 
     bool dead = false;
 
     private void Update()
     {
-        UpdateHelath();
-        //healthbar.text = health.ToString();
-
         if (!isLocalPlayer) { return; }
+
 
         if (health <= 0 && !dead)
         {
@@ -28,12 +32,15 @@ public class Health : NetworkBehaviour
                 {
                     FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(GetComponent<PlayerInteractions>().thisPlayerTag);
 
-                    MinigameManager.instance.attackingPlayer.GetComponent<FieldData>().SwitchCaptureState(winner);
-                    MinigameManager.instance.fieldToPlayAbout.GetComponent<FieldData>().SwitchCaptureState(winner);
-                    player.CmdSetFieldState(MinigameManager.instance.attackingPlayer.GetComponent<NetworkIdentity>(), winner);
-                    player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
 
-                    SaveMap.instance.SaveGameMap();
+                    foreach (FieldData field in MinigameManager.instance.attackingPlayers)
+                    {
+                        field.SwitchCaptureState(winner);
+                        player.CmdSetFieldState(field.GetComponent<NetworkIdentity>(), winner);
+                    }
+
+                    MinigameManager.instance.fieldToPlayAbout.GetComponent<FieldData>().SwitchCaptureState(winner);
+                    player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
 
                     SaveMap.instance.SaveGameMap();
                 }
@@ -42,14 +49,28 @@ public class Health : NetworkBehaviour
         }
     }
 
-    void UpdateHelath()
+    public void UpdateHealth()
     {
-        healthbar.fillAmount = Mathf.Lerp(0, 1, Mathf.InverseLerp(0, startHealth, health));
+        healthbar.fillAmount = Mathf.Lerp(0, 1, Mathf.InverseLerp(0, actualHealth, health));
     }
 
-    public void ResetMinigameHealth()
+    public void ResetMinigameHealth(int attackers)
     {
-        health = startHealth;
+        if (attackers != 0)
+        {
+            Debug.Log("Option 1 " + attackers);
+            health = startHealth * attackers;
+            actualHealth = health;
+        }
+        else
+        {
+            Debug.Log("Option 2 " + attackers);
+            health = startHealth;
+            actualHealth = startHealth;
+        }
+
+        UpdateHealth();
+
         dead = false;
     }
 }

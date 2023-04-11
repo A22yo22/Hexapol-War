@@ -101,6 +101,7 @@ public class TankTurret : NetworkBehaviour
     public void RpcTakeDamage(int damage, NetworkIdentity id)
     {
         id.GetComponent<Health>().health -= damage;
+        id.GetComponent<Health>().UpdateHealth();
 
         if (id.GetComponent<Health>().health <= 0)
         {

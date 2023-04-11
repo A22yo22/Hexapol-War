@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RPSNetworkManager : NetworkBehaviour
 {
+    /*
     //Tell the other player the selected rps of the current player
     [Command]
     public void CmdSelectRPS(RPSGameManager.RPS choice, bool isPlayer1)
@@ -39,7 +40,8 @@ public class RPSNetworkManager : NetworkBehaviour
 
         //Set winner fields
         MinigameManager.instance.fieldToPlayAbout.SwitchCaptureState(winner);
-        MinigameManager.instance.attackingPlayer.SwitchCaptureState(winner);
+
+        MinigameManager.instance.attackingPlayers.SwitchCaptureState(winner);
 
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
@@ -52,4 +54,5 @@ public class RPSNetworkManager : NetworkBehaviour
         //Destroy runnting minigame
         Destroy(MinigameManager.instance.minigameRunning);
     }
+    */
 }

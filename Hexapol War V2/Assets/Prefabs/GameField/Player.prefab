@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3059021787863453056
 RectTransform:
   m_ObjectHideFlags: 0
@@ -493,7 +493,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   otherPlayer: {fileID: 0}
-  lastSelectedField: {fileID: 0}
+  lastSelectedFields: []
   canMove: 1
   enemyColor: {fileID: 2100000, guid: ab35b60bb04891542bb432ee9b031c89, type: 2}
   selectedFields: []
@@ -516,6 +516,8 @@ MonoBehaviour:
   fieldsCaptured: -1
   gameStarted: 0
   remainingFields: []
+  blueFieldsFound: 0
+  redFieldsFound: 0
 --- !u!114 &700522551505338179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,7 +654,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4407027616088828492}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 462d9a0246dc9f947bf00ada805c6ef0, type: 3}
   m_Name: 
@@ -662,6 +664,7 @@ MonoBehaviour:
   syncInterval: 0.1
   health: 3
   startHealth: 3
+  actualHealth: 0
   healthbar: {fileID: 61123368162546737}
 --- !u!1 &4654831778335794723
 GameObject:
