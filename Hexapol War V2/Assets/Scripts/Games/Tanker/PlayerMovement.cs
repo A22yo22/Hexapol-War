@@ -11,14 +11,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        /*
-        if (!isLocalPlayer)
-        {
-            enabled = false;
-            return;
-        }
-        */
-
         if (canMove)
         {
             float horizontal = Input.GetAxis("Horizontal");

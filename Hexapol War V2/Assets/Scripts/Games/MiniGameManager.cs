@@ -31,7 +31,7 @@ public class MiniGameManager : NetworkBehaviour
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
         }
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             player.enabled = false;
 
@@ -68,7 +68,7 @@ public class MiniGameManager : NetworkBehaviour
             gameFieldObject.transform.position = new Vector3(0, 0, 0);
         }
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             player.enabled = true;
 
@@ -81,7 +81,7 @@ public class MiniGameManager : NetworkBehaviour
         Destroy(minigameRunning);
 
         //Refreshing game over manager
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.thisPlayerTag != FieldData.CaptureState.Clear)
             {

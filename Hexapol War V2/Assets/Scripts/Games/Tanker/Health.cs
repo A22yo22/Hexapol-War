@@ -26,8 +26,8 @@ public class Health : NetworkBehaviour
 
         if (health <= 0 && !dead)
         {
-            foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
-            {
+            foreach (PlayerInteractions player in GameDataHolder.instance.players)
+            {   
                 if (player.isOwned)
                 {
                     FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(GetComponent<PlayerInteractions>().thisPlayerTag);

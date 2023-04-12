@@ -31,7 +31,7 @@ public class PauseManager : MonoBehaviour
 
         pauseMenu.SetActive(true);
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             player.enabled = false;
         }
@@ -43,7 +43,7 @@ public class PauseManager : MonoBehaviour
 
         pauseMenu.SetActive(false);
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             player.enabled = true;
         }

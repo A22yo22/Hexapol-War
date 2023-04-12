@@ -24,7 +24,7 @@ public class LobbyManager : NetworkBehaviour
         }
         if (playerReady == 2)
         {
-            foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+            foreach (PlayerInteractions player in GameDataHolder.instance.players)
             {
                 player.enabled = true;
             }

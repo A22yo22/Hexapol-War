@@ -66,7 +66,7 @@ public class GameOverManager : NetworkBehaviour
 
     void SetFieldsCaptured()
     {
-        foreach(PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach(PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.thisPlayerTag != FieldData.CaptureState.Clear)
             {

@@ -43,7 +43,7 @@ public class FieldSpawner : NetworkBehaviour
 
                     fieldsSpawned.Add(hexagon);
 
-                    foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+                    foreach (PlayerInteractions player in GameDataHolder.instance.players)
                     {
                         if(player.isOwned) player.CmdAddToList(hexagon.GetComponent<NetworkIdentity>());
                     }

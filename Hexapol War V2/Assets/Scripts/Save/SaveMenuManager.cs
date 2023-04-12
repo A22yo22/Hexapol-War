@@ -44,7 +44,7 @@ public class SaveMenuManager : MonoBehaviour
 
     void SetStartingFields(int fields)
     {
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.isOwned)
             {

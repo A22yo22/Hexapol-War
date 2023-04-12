@@ -55,14 +55,14 @@ public class SaveMap : NetworkBehaviour
 
         mainMenu.SetActive(false);
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             player.enabled = true;
         }
 
         int fieldsSpawned = PlayerPrefs.GetInt("fieldsSpawned" + currentSave);
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.isOwned)
             {

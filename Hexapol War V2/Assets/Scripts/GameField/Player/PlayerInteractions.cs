@@ -52,10 +52,11 @@ public class PlayerInteractions : NetworkBehaviour
             CmdSetEnemyColor(GetComponent<NetworkIdentity>());
         }
 
+        //Add player to GameDataHolder
+        GameDataHolder.instance.players.Add(this);
+
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
-
-
     }
 
     bool firstTileSpawned;
@@ -282,7 +283,7 @@ public class PlayerInteractions : NetworkBehaviour
             MiniGameManager.instance.attackingPlayers.Add(field.GetComponent<FieldData>());
         }
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.gameObject == attackingPlayer)
             {
@@ -370,7 +371,7 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetPlayer1ToMove()
     {
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.thisPlayerTag == FieldData.CaptureState.Player1) player.canMove = true;
             else if (player.thisPlayerTag == FieldData.CaptureState.Player2) player.canMove = false;
@@ -379,7 +380,7 @@ public class PlayerInteractions : NetworkBehaviour
     [ClientRpc]
     public void RpcSetPlayer2ToMove()
     {
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
         {
             if (player.thisPlayerTag == FieldData.CaptureState.Player1) player.canMove = false;
             else if (player.thisPlayerTag == FieldData.CaptureState.Player2) player.canMove = true;
