@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinigameManager : NetworkBehaviour
+public class MiniGameManager : NetworkBehaviour
 {
-    public static MinigameManager instance;
+    public static MiniGameManager instance;
 
     public int minigamesPlayed;
 
@@ -30,7 +30,6 @@ public class MinigameManager : NetworkBehaviour
         {
             gameFieldObject.transform.position = new Vector3(0, 300, 0);
         }
-;
 
         foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
         {
@@ -61,7 +60,7 @@ public class MinigameManager : NetworkBehaviour
         NetworkServer.Spawn(minigameRunning);
     }
 
-    public void GameOver(NetworkIdentity loser)
+    public void GameOver()
     {
         //Enable game map
         foreach (GameObject gameFieldObject in gameFieldFolder)

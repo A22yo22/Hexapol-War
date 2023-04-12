@@ -26,10 +26,6 @@ public class PlayerInteractions : NetworkBehaviour
     //Lists
     public List<GameObject> selectedFields;
 
-
-    //References
-    LobbyManager lobbyManager;
-
     void Start()
     {
         //Check if is local player
@@ -45,23 +41,19 @@ public class PlayerInteractions : NetworkBehaviour
         if (isServer)
         {
             thisPlayerTag = FieldData.CaptureState.Player1;
-
-            FieldSpawner.instance.indicator.SetActive(true);
+            transform.Find("CanMove").gameObject.SetActive(true);
             firstTimePlayerCanMove = false;
         }
         else if (isClientOnly)
         {
             thisPlayerTag = FieldData.CaptureState.Player2;
-            FieldSpawner.instance.indicator.SetActive(false);
+            transform.Find("CanMove").gameObject.SetActive(false);
             firstTimePlayerCanMove = true;
             CmdSetEnemyColor(GetComponent<NetworkIdentity>());
         }
 
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
-
-        //Get lobby manger
-        lobbyManager = FindObjectOfType<LobbyManager>();
 
 
     }
@@ -259,12 +251,12 @@ public class PlayerInteractions : NetworkBehaviour
     {
         RestSelectedFields();
 
-        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
-        {
-            player.GetComponent<Health>().ResetMinigameHealth(player.lastSelectedFields.Count);
-        }
+        //foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        //{
+        //    player.GetComponent<Health>().ResetMinigameHealth(player.lastSelectedFields.Count);
+        //}
 
-        CmdStartMinigame(fieldToPlayAbout, lastSelectedFields, lastSelectedFields.Count);
+        CmdStartMinigame(fieldToPlayAbout, lastSelectedFields, gameObject);
     }
 
     //Network section
@@ -274,24 +266,35 @@ public class PlayerInteractions : NetworkBehaviour
 
     //Start minigame
     [Command]
-    public void CmdStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayer, int attackers)
+    public void CmdStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayers, GameObject attackingPlayer)
     {
-        MinigameManager.instance.OpenMiniGameame();
-        RpcStartMinigame(fieldToPlayAbout, attackingPlayer);
+        MiniGameManager.instance.OpenMiniGameame();
+
+        RpcStartMinigame(fieldToPlayAbout, attackingPlayers, attackingPlayer);
     }
     [ClientRpc]
-    public void RpcStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayers)
+    public void RpcStartMinigame(GameObject fieldToPlayAbout, List<GameObject> attackingPlayers, GameObject attackingPlayer)
     {
-        MinigameManager.instance.fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
+        MiniGameManager.instance.fieldToPlayAbout = fieldToPlayAbout.GetComponent<FieldData>();
+
         foreach (GameObject field in attackingPlayers)
         {
-            MinigameManager.instance.attackingPlayers.Add(field.GetComponent<FieldData>());
+            MiniGameManager.instance.attackingPlayers.Add(field.GetComponent<FieldData>());
         }
 
-        MinigameManager.instance.StartMiniGame();
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            if (player.gameObject == attackingPlayer)
+            {
+                attackingPlayer.GetComponent<Health>().ResetMinigameHealth(attackingPlayers.Count);
+            }
+            else
+            {
+                player.GetComponent<Health>().ResetMinigameHealth(1);
+            }
+        }
 
-
-        //GetComponent<Health>().UpdateHealth();
+        MiniGameManager.instance.StartMiniGame();
     }
 
     //Field stuff

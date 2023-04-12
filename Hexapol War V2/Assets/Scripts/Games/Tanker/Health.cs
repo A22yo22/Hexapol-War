@@ -33,14 +33,14 @@ public class Health : NetworkBehaviour
                     FieldData.CaptureState winner = Checks.GetOppositeOfPlayerTag(GetComponent<PlayerInteractions>().thisPlayerTag);
 
 
-                    foreach (FieldData field in MinigameManager.instance.attackingPlayers)
+                    foreach (FieldData field in MiniGameManager.instance.attackingPlayers)
                     {
                         field.SwitchCaptureState(winner);
                         player.CmdSetFieldState(field.GetComponent<NetworkIdentity>(), winner);
                     }
 
-                    MinigameManager.instance.fieldToPlayAbout.GetComponent<FieldData>().SwitchCaptureState(winner);
-                    player.CmdSetFieldState(MinigameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
+                    MiniGameManager.instance.fieldToPlayAbout.GetComponent<FieldData>().SwitchCaptureState(winner);
+                    player.CmdSetFieldState(MiniGameManager.instance.fieldToPlayAbout.GetComponent<NetworkIdentity>(), winner);
 
                     SaveMap.instance.SaveGameMap();
                 }
@@ -59,12 +59,14 @@ public class Health : NetworkBehaviour
         if (attackers != 0)
         {
             Debug.Log("Option 1 " + attackers);
+
             health = startHealth * attackers;
             actualHealth = health;
         }
         else
         {
             Debug.Log("Option 2 " + attackers);
+
             health = startHealth;
             actualHealth = startHealth;
         }
