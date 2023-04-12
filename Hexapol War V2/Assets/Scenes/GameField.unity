@@ -7517,17 +7517,17 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   colorGradientTexture: {fileID: 0}
   shallowColor: {r: 0, g: 0.7725491, b: 0.62352943, a: 0.5019608}
-  deepColor: {r: 0.01176471, g: 0.28580135, b: 0.50980073, a: 1}
+  deepColor: {r: 0.01176471, g: 0.2858003, b: 0.50980073, a: 1}
   colorDepth: 0.84
-  horizonColor: {r: 0, g: 0.22697785, b: 0.8, a: 1}
+  horizonColor: {r: 0, g: 0.22697681, b: 0.8, a: 1}
   horizonDistance: 20
   shoreFade: 1
-  shoreColor: {r: 0, g: 0.98039216, b: 0.30148762, a: 0}
+  shoreColor: {r: 0, g: 0.98039216, b: 0.30148658, a: 0}
   shoreStrength: 0
   shoreBlend: 1
   shoreDepth: 0.5
   waveColor: {r: 0, g: 0, b: 0, a: 0}
-  underwaterColor: {r: 0.20347309, g: 0.30933073, b: 0.517647, a: 0}
+  underwaterColor: {r: 0.20347211, g: 0.3093297, b: 0.517647, a: 0}
   underwaterColorStrength: 0
   underwaterRefractionStrength: 0.099
   surfaceFoamTexture: {fileID: 2800000, guid: d3b0d77dfe711a04c8ff18ecc260aa66, type: 3}
@@ -8032,6 +8032,7 @@ GameObject:
   - component: {fileID: 1582334533}
   - component: {fileID: 1582334534}
   - component: {fileID: 1582334535}
+  - component: {fileID: 1582334536}
   m_Layer: 0
   m_Name: --Manager--
   m_TagString: Untagged
@@ -8084,6 +8085,19 @@ MonoBehaviour:
   title: {fileID: 2147209123}
   scale: {fileID: 2043858041}
   startingFields: {fileID: 29767522}
+--- !u!114 &1582334536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582334532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d25e20b2f8d71164abc4ba9027ead325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
 --- !u!1 &1624975159
 GameObject:
   m_ObjectHideFlags: 0

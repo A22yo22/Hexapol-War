@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float movmentSpeed;
+    public float movementSpeed;
     public bool canMove;
     public Rigidbody rb;
 
@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
-            rb.velocity = new Vector3(horizontal * movmentSpeed, rb.velocity.y, vertical * movmentSpeed);
+            Vector3 movement = new Vector3(horizontal, 0, vertical).normalized * movementSpeed;
+            rb.MovePosition(rb.position + movement * Time.deltaTime);
         }
     }
 }

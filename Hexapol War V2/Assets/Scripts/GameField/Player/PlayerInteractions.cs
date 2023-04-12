@@ -41,7 +41,7 @@ public class PlayerInteractions : NetworkBehaviour
         if (isServer)
         {
             thisPlayerTag = FieldData.CaptureState.Player1;
-            transform.Find("CanMove").gameObject.SetActive(true);
+            transform.Find("CanMove").gameObject.SetActive(false);
             firstTimePlayerCanMove = false;
         }
         else if (isClientOnly)
@@ -53,7 +53,7 @@ public class PlayerInteractions : NetworkBehaviour
         }
 
         //Add player to GameDataHolder
-        GameDataHolder.instance.players.Add(this);
+        CmdAddPlayerToGameDataList(GetComponent<NetworkIdentity>());
 
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
@@ -245,8 +245,6 @@ public class PlayerInteractions : NetworkBehaviour
         SaveMap.instance.SaveGameMap();
     }
 
-
-
     //Events
     public void Attack(GameObject fieldToPlayAbout)
     {
@@ -261,9 +259,6 @@ public class PlayerInteractions : NetworkBehaviour
     }
 
     //Network section
-
-    //Mini game stuff
-
 
     //Start minigame
     [Command]
@@ -396,6 +391,17 @@ public class PlayerInteractions : NetworkBehaviour
     public void RpcSetEnemyColor(NetworkIdentity id)
     { 
         id.GetComponent<PlayerInteractions>().SetColorRed();
+    }
+
+    [Command]
+    public void CmdAddPlayerToGameDataList(NetworkIdentity player)
+    {
+        RpcAddPlayerToGameDataList(player);
+    }
+    [ClientRpc]
+    public void RpcAddPlayerToGameDataList(NetworkIdentity player)
+    {
+        GameDataHolder.instance.players.Add(player.GetComponent<PlayerInteractions>());
     }
 
     public void SetColorRed()
