@@ -32,7 +32,7 @@ public class PlayerInteractions : NetworkBehaviour
         if (!isLocalPlayer)
         {
             //Disabel can move text
-            Destroy(transform.GetChild(0).gameObject);
+            Destroy(transform.Find("CanMove").gameObject);
 
             return;
         }
@@ -41,19 +41,23 @@ public class PlayerInteractions : NetworkBehaviour
         if (isServer)
         {
             thisPlayerTag = FieldData.CaptureState.Player1;
-            transform.Find("CanMove").gameObject.SetActive(false);
+            //transform.Find("CanMove").gameObject.SetActive(false);
             firstTimePlayerCanMove = false;
         }
         else if (isClientOnly)
         {
             thisPlayerTag = FieldData.CaptureState.Player2;
-            transform.Find("CanMove").gameObject.SetActive(false);
+            //transform.Find("CanMove").gameObject.SetActive(false);
             firstTimePlayerCanMove = true;
             CmdSetEnemyColor(GetComponent<NetworkIdentity>());
         }
 
         //Add player to GameDataHolder
-        CmdAddPlayerToGameDataList(GetComponent<NetworkIdentity>());
+        foreach (PlayerInteractions player in FindObjectsOfType<PlayerInteractions>())
+        {
+            GameDataHolder.instance.players.Add(player);
+            CmdAddPlayerToGameDataList(player.GetComponent<NetworkIdentity>());
+        }
 
         //Add event to ready up button
         UiManager.instance.button.onClick.AddListener(ReadyUp);
@@ -105,7 +109,7 @@ public class PlayerInteractions : NetworkBehaviour
         if (canMove)
         {
             //Disabel can move text
-            transform.GetChild(0).gameObject.SetActive(true);
+            transform.Find("CanMove").gameObject.SetActive(true);
 
             if (!firstTimePlayerCanMove)
             {
@@ -153,7 +157,7 @@ public class PlayerInteractions : NetworkBehaviour
         else
         {
             //Disabel can move text
-            transform.GetChild(0).gameObject.SetActive(false);
+            transform.Find("CanMove").gameObject.SetActive(false);
         }
     }
 
@@ -402,6 +406,8 @@ public class PlayerInteractions : NetworkBehaviour
     public void RpcAddPlayerToGameDataList(NetworkIdentity player)
     {
         GameDataHolder.instance.players.Add(player.GetComponent<PlayerInteractions>());
+
+        GameDataHolder.instance.players = GameDataHolder.instance.players.Distinct().ToList();
     }
 
     public void SetColorRed()

@@ -49,8 +49,6 @@ public class MiniGameManager : NetworkBehaviour
             //Disables all minigame objects
             player.GetComponent<PlayerMovement>().enabled = true;
             player.GetComponent<TankTurret>().enabled = true;
-
-            //player.GetComponent<Health>().ResetMinigameHealth(1);
         }
     }
 

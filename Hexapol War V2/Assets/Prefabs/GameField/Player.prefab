@@ -494,7 +494,7 @@ MonoBehaviour:
     m_Bits: 64
   otherPlayer: {fileID: 0}
   lastSelectedFields: []
-  canMove: 1
+  canMove: 0
   enemyColor: {fileID: 2100000, guid: ab35b60bb04891542bb432ee9b031c89, type: 2}
   selectedFields: []
 --- !u!114 &9156983130289781766

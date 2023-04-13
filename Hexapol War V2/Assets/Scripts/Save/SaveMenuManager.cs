@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SaveMenuManager : MonoBehaviour
+public class SaveMenuManager : NetworkBehaviour
 {
+    public static SaveMenuManager instance;
+
     //Save Menu Settings
     [SerializeField] Transform loadSaveParent;
     [SerializeField] GameObject savedMapPrefab;
@@ -17,6 +19,8 @@ public class SaveMenuManager : MonoBehaviour
 
     private void Start()
     {
+        if (instance == null) { instance = this; }
+
         LoadSavedList();
     }
 
@@ -107,6 +111,17 @@ public class SaveMenuManager : MonoBehaviour
             GameObject savedMapObject = Instantiate(savedMapPrefab);
             savedMapObject.transform.SetParent(loadSaveParent);
             savedMapObject.GetComponent<LoadObjectManager>().SetUp(title, playedWith, scale, blue, red, i);
+        }
+    }
+
+    public void StartGame()
+    {
+        foreach (PlayerInteractions player in GameDataHolder.instance.players)
+        {
+            if (player.isOwned)
+            {
+                player.CmdSetPlayer1ToMove();
+            }
         }
     }
 }

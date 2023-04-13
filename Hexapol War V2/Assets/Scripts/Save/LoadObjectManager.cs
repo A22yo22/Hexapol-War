@@ -30,6 +30,7 @@ public class LoadObjectManager : MonoBehaviour
         id = idThis;
 
         press.onClick.AddListener(Clicked);
+        press.onClick.AddListener(SaveMenuManager.instance.StartGame);
     }
     public void Clicked()
     {
